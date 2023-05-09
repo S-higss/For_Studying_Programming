@@ -1,170 +1,153 @@
-# �J����
+# 環境構築
 
-## �ڎ�
-- [��](#��)
-- [�J�����\�z](#�J�����\�z)
-    - [Python�̃C���X�g�[��](#python�̃C���X�g�[��)
-    - [pip�̃C���X�g�[��](#pip�̃C���X�g�[��)
-    - [make�̃C���X�g�[��](#make�̃C���X�g�[��)
+## 目次
+- [Pythonのインストール](#pythonのインストール)
+- [pipのインストール](#pipのインストール)
+- [makeのインストール](#makeのインストール)
 
-## ��
+## Pythonのインストール
+以下はPython3.9の例ですが，
+他バージョンの場合はPython3.xのxを任意の数字に置き換えてください．
 
-OS: Windows10/11, Linux
+### Linux環境の場合
+aptを利用してインストールする場合を説明します．
 
-Python: v3.9.6
-(�������CLinux�ł�Python: v3.9.x, v3.10.x, v3.11.x �œ���m�F��)
-
-pip: v22.3.1
-
-[TOP �ɖ߂�](#�ڎ�)
-
-[HOME �ɖ߂�](../README.md)
-
-## �J�����\�z
-
-### Python�̃C���X�g�[��
-�ȉ���Python3.9�̗�ł����C
-���o�[�W�����̏ꍇ��Python3.x��x��C�ӂ̐����ɒu�������Ă��������D
-
-#### Linux���̏ꍇ
-apt�𗘗p���ăC���X�g�[������ꍇ��������܂��D
-
-##### apt��update
+#### aptをupdate
 
 ```bash
 sudo apt update
 sudo apt install software-properties-common
 ```
 
-##### Repository��o�^
+#### Repositoryを登録
 
 ```bash
 sudo add-apt-repository ppa:deadsnakes/ppa
 ```
 
-##### Python3.9���C���X�g�[��
+#### Python3.9をインストール
 
 ```bash
 sudo apt install python3.9
 ```
 
-##### Python3.9���C���X�g�[���ł������m�F
+#### Python3.9がインストールできたか確認
 
 ```bash
 python3.9 --version
 ```
 
-�����C���X�g�[���ł��Ă���Έȉ��̂悤�ȏo�͂��Ȃ���܂��D(���v3.9.16)
+無事インストールできていれば以下のような出力がなされます．(例はv3.9.16)
 
 ```bash
 Python 3.9.16
 ```
 
-#### Windows���̏ꍇ
-�����T�C�g����C���X�g�[�����܂��D
-[������](http://netsu-n.mep.titech.ac.jp/~Kawaguchi/python/install-win/)���Q�l�ɂ��Ă��������D
-(�Q�l�F�����H�Ƒ�w �H�w�@�@�B�n ����B�珕���y�[�W)
+### Windows環境の場合
+公式サイトからインストールします．
+[こちら](http://netsu-n.mep.titech.ac.jp/~Kawaguchi/python/install-win/)を参考にしてください．
+(参考：東京工業大学 工学院機械系 川口達也助教ページ)
 
-[TOP �ɖ߂�](#�ڎ�)
+[TOP に戻る](#目次)
 
-[HOME �ɖ߂�](../README.md)
+[HOME に戻る](../README.md)
 
-### pip�̃C���X�g�[��
-pip�̃C���X�g�[���ɂ��ẮCPython3�n���C���X�g�[������Ă��邱�Ƃ�O��ɐ������܂��D
+## pipのインストール
+pipのインストールについては，Python3系がインストールされていることを前提に説明します．
 
-##### pip���C���X�g�[������Ă��邩�̊m�F
+#### pipがインストールされているかの確認
 
 ```bash
 pip -V
-��������
+もしくは
 pip3 -V
 ```
 
-pip�̃o�[�W������񂪏o��΃C���X�g�[������Ă��邽�߁C__�ȍ~�̑���͕s�v__ �ł��D
-`ModuleNotFoundError: No Module named 'pip'`�Əo�͂��ꂽ���C�G���[���o�͂��ꂽ�ꍇ�C���̃R�}���h�����s���Ă��������D
+pipのバージョン情報が出ればインストールされているため，__以降の操作は不要__ です．
+`ModuleNotFoundError: No Module named 'pip'`と出力された等，エラーが出力された場合，次のコマンドを実行してください．
 
 ```bash
 python -m pip -V
-��������
+もしくは
 python3 -m pip -V
 ```
 
-���̃R�}���h�����s�ł����ꍇ�́C__pip�̓C���X�g�[������Ă��邪�p�X���ʂ��Ă��Ȃ�__ ���ƂɂȂ�܂��D���̏ꍇ��[������]()���Q�Ƃ��Ă��������D
-���̃R�}���h�ł��G���[���o�͂��ꂽ�ꍇ�C���ɐi��ŉ������D
+このコマンドが実行できた場合は，__pipはインストールされているがパスが通っていない__ ことになります．その場合は[こちら]()を参照してください．
+このコマンドでもエラーが出力された場合，次に進んで下さい．
 
-##### get-pip.py���_�E�����[�h
-- Linux��
+#### get-pip.pyをダウンロード
+- Linux環境
 
 ```bash
 wget https://bootstrap.pypa.io/get-pip.py
 ```
 
-- Windows��
-    1. �_�E�����[�h��Fhttps://bootstrap.pypa.io/get-pip.py ���get-pip.py��C�ӂ̃f�B���N�g���ɕۑ�
-    1. �ۑ������f�B���N�g���Ŏ����̃R�}���h�����s
+- Windows環境
+    1. ダウンロード先：https://bootstrap.pypa.io/get-pip.py よりget-pip.pyを任意のディレクトリに保存
+    1. 保存したディレクトリで次項のコマンドを実行
 
-##### python�R�}���h��p����pip���C���X�g�[��
+#### pythonコマンドを用いてpipをインストール
 
 ```bash
 python get-pip.py
 ```
 
-##### pip���C���X�g�[�����ꂽ���̊m�F
-���@�́C[pip���C���X�g�[������Ă��邩�̊m�F](#pip���C���X�g�[�����ꂽ���̊m�F)�Ɠ��l�ł��D
+#### pipがインストールされたかの確認
+方法は，[pipがインストールされているかの確認](#pipがインストールされたかの確認)と同様です．
 
-#### pip�Ƀp�X��ʂ����@
-Windows���ł́C��{�I��Python��path���ʂ��Ă����pip�����삷��͂��ł��邽�߁C�ȉ���Linux���ɂ��Đ������Ă��܂��D
-���̃R�}���h�ŁCpip��`~/.local/bin`�z���ɒu����Ă��邩�m�F���܂��D
+### pipにパスを通す方法
+Windows環境では，基本的にPythonのpathが通っていればpipも動作するはずであるため，以下はLinux環境について説明しています．
+次のコマンドで，pipが`~/.local/bin`配下に置かれているか確認します．
 
 ```bash
 ls ~/.local/bin
 ```
 
-���̎��s���ʓ���`pip`��`pip3`���̕\��������΁C�ȉ��̃R�}���h�Ńp�X��ʂ��܂��D
-�Ȃ������ꍇ�C`which pip`��pip���u����Ă���p�X���m�F���C`~/.local/bin`�z����pip���ړ����Ă��������D
+この実行結果内に`pip`や`pip3`等の表示があれば，以下のコマンドでパスを通します．
+なかった場合，`which pip`でpipが置かれているパスを確認し，`~/.local/bin`配下にpipを移動してください．
 
 ```bash
 export PATH=$PATH:~/.local/bin
 ```
 
-�p�X��ʂ�����Cpip�R�}���h�����s�ł��邩�m�F���܂��D
-���@�́C[pip���C���X�g�[������Ă��邩�̊m�F](#pip���C���X�g�[�����ꂽ���̊m�F)�Ɠ��l�ł��D
+パスを通したら，pipコマンドが実行できるか確認します．
+方法は，[pipがインストールされているかの確認](#pipがインストールされたかの確認)と同様です．
 
-[TOP �ɖ߂�](#�ڎ�)
+[TOP に戻る](#目次)
 
-[HOME �ɖ߂�](../README.md)
+[HOME に戻る](../README.md)
 
-### make�̃C���X�g�[��
-make�͎�Ƃ��āCC�����C++�ȂǃR���p�C���^�̃v���O���~���O����ŋL�q���ꂽ�v���O������e�ՂɃr���h���邽�߂̃c�[���ł��D
-�{�V�X�e���ł��C�R�}���h���C���ł̎��s�̊ȗ����̂���Makefile��z�u���g�p���Ă��܂��D
+## makeのインストール
+makeは主として，C言語やC++などコンパイル型のプログラミング言語で記述されたプログラムを容易にビルドするためのツールです．
+本システムでも，コマンドラインでの実行の簡略化のためMakefileを配置し使用しています．
 
-#### Linux���̏ꍇ
-apt�𗘗p���ăC���X�g�[������ꍇ��������܂��D
+### Linux環境の場合
+aptを利用してインストールする場合を説明します．
 
-##### apt��update
+#### aptをupdate
 
 ```bash
 sudo apt update
 ```
 
-##### make���C���X�g�[��
+#### makeをインストール
 
 ```bash
 sudo apt install -y make
 ```
 
-##### make���C���X�g�[�����ꂽ���̊m�F
-���̃R�}���h�����s���Cmake�̃o�[�W������񂪏o��΃C���X�g�[�������ł��D
+#### makeがインストールされたかの確認
+次のコマンドを実行し，makeのバージョン情報が出ればインストール完了です．
 
 ```bash
 make -version
 ```
 
-#### Windows���̏ꍇ
-�����T�C�g����C���X�g�[�����܂��D
-[������](https://www.kkaneko.jp/tools/win/make.html)���Q�l�ɂ��Ă��������D
-(�Q�l�F���R��w �H�w�����H�w�� ���q�M�F�����y�[�W)
+### Windows環境の場合
+公式サイトからインストールします．
+[こちら](https://www.kkaneko.jp/tools/win/make.html)を参考にしてください．
+(参考：福山大学 工学部情報工学科 金子邦彦教授ページ)
 
-[TOP �ɖ߂�](#�ڎ�)
+[TOP に戻る](#目次)
 
-[HOME �ɖ߂�](../README.md)
+[HOME に戻る](../README.md)
