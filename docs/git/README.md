@@ -25,6 +25,10 @@ git --version
 
 でバージョンが表示されれば完了です．
 
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
 ## ユーザ名/メールアドレスの設定
 まずGitHubアカウントを作成していることが大前提となるので，  
 作成していない場合は[公式サイト](https://github.com/)にて，アカウントを作成してください．
@@ -43,6 +47,10 @@ git config --global --list
 ```
 
 で設定情報を確認することができます．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
 
 ## 公開/秘密鍵の作成
 `~/.ssh`配下に公開鍵・秘密鍵を作成します．  
@@ -66,6 +74,10 @@ Enter passphrase (empty for no passphrase):
 
 これらを入力すると，先ほどのpathに公開・秘密鍵が作成されます．  
 (デフォルトの場合，秘密鍵：`id_rsa`，公開鍵：`id_rsa.pub`というファイル名になります．)
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
 
 ## 公開鍵の登録
 公開・秘密鍵を作成したら，次はGitHubアカウントに公開鍵の登録をします．  
@@ -100,6 +112,9 @@ IdentityFile "/home/<username>/.ssh/rsa_github"
 
 その後，configファイルを保存して，完了です．
 
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
 
 ## 接続の確認
 コマンドライン上で以下コマンドを実行します．
@@ -119,6 +134,10 @@ Hi <username>! You've successfully authenticated, but GitHub does not provide sh
 ```
 と表示されれば成功です．
 
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
 ## リポジトリにSSH接続
 ブラウザでGitHubにて使用するリポジトリを開き，`<> code`をクリックしてからsshを選択し，接続するための文字列をコピーします．  
 コマンドライン上に戻り，これからリモートレポジトリをクローンしたいディレクトリ内で
@@ -129,3 +148,7 @@ git clone git@github.com:xxxx/test-repository.git
 
 を実行すれば，リポジトリが紐づけられ，作業が可能になります．  
 ここで，`git@github.com:xxxx/test-repository.git`は，先ほどGitHubにてコピーした接続するための文字列です．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
