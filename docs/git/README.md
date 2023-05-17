@@ -108,8 +108,16 @@ IdentityFile "/home/<username>/.ssh/rsa_github"
 ssh -T git@github.com
 ```
 
-初めて接続する際，`Are you sure you want to continue connecting (yes/no/[fingerprint])?`と聞かれますが，`yes`と答えれば大丈夫です．  
-結果，`Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.`と表示されれば成功です．
+初めて接続する際，
+```bash
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+と聞かれますが，`yes`と答えれば大丈夫です．  
+結果，
+```bash
+Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
+```
+と表示されれば成功です．
 
 ## リポジトリにSSH接続
 ブラウザでGitHubにて使用するリポジトリを開き，`<> code`をクリックしてからsshを選択し，接続するための文字列をコピーします．  
