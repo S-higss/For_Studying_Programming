@@ -1,8 +1,9 @@
-# ƒhƒLƒ…ƒƒ“ƒg
+# ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ
 
-## –ÚŽŸ
+## ç›®æ¬¡
 
-- [ŠÂ‹«\’z](./env/README.md)
-- [ŽQl•¶Œ£EƒTƒCƒg](./ref/README.md)
+- [ç’°å¢ƒæ§‹ç¯‰](./env/README.md)
+- [Git/GitHub](./git/README.md)
+- [å‚è€ƒæ–‡çŒ®ãƒ»ã‚µã‚¤ãƒˆ](./ref/README.md)
 
-[HOME ‚É–ß‚é](../README.md)
+[HOME ã«æˆ»ã‚‹](../README.md)
