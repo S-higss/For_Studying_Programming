@@ -36,8 +36,8 @@ git --version
 GitHubにアクセスするために、`/.gitconfig`に登録済みユーザ名及びメールアドレスを設定します．
 
 ```bash
-git config —global user.name <登録したユーザー名>
-git config —global user.email <登録したメールアドレス>
+git config --global user.name <登録したユーザー名>
+git config --global user.email <登録したメールアドレス>
 ```
 
 どちらも設定出来たら，
