@@ -225,7 +225,9 @@ sudo chown $USER:$USER /home/$USER/.docker -R
 sudo chmod g+rwx $HOME/.docker -R
 ```
 
-以上のコマンドが, .dockerディレクトリがなくエラーが出る場合は
+以上のコマンドの結果,   
+`chown: '/home/$USER/.docker' にアクセスできません: そのようなファイルやディレクトリはありません`  
+とエラーが出た場合は, 次を試してください.
 
 ```bash
 sudo gpasswd -a $USER docker
