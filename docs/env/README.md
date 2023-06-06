@@ -225,6 +225,20 @@ sudo chown $USER:$USER /home/$USER/.docker -R
 sudo chmod g+rwx $HOME/.docker -R
 ```
 
+以上のコマンドが, .dockerディレクトリがなくエラーが出る場合は
+
+```bash
+sudo gpasswd -a $USER docker
+```
+
+として, 現行ユーザをdockerグループに所属させたのち,
+
+```bash
+sudo systemctl restart docker
+```
+
+としてdockerデーモンを再起動, その後再ログインするとよいです． 
+
 システムから一度ログアウトし，再度ログインして新規グループメンバーシップを有効にします．  
 その後，`sudo`を使わずに`docker`コマンドを実行してみましょう．
 
