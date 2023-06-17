@@ -46,7 +46,7 @@ Python 3.9.16
 
 ### Windows環境の場合
 公式サイトからインストールします．
-[こちら](https://www.python.jp/install/windows/install.html)を参考にしてください． 
+[こちら](https://www.python.jp/install/windows/install.html)を参考にしてください.  
 (参考：Python.jp プログラミング言語 Python情報サイト)
 
 [TOP に戻る](#目次)
