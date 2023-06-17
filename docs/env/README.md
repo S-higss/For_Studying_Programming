@@ -46,8 +46,8 @@ Python 3.9.16
 
 ### Windows環境の場合
 公式サイトからインストールします．
-[こちら](http://netsu-n.mep.titech.ac.jp/~Kawaguchi/python/install-win/)を参考にしてください．
-(参考：東京工業大学 工学院機械系 川口達也助教ページ)
+[こちら](https://www.python.jp/install/windows/install.html)を参考にしてください．
+(参考：Python.jp プログラミング言語 Python情報サイト)
 
 [TOP に戻る](#目次)
 
