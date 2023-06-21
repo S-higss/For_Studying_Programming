@@ -11,6 +11,10 @@ ssh接続する手順を紹介しています．
 
 
 ## Gitのインストール 
+Windows環境ではインストーラーを用いてのインストールになります．  
+その場合は[こちら](https://www.curict.com/item/60/60bfe0e.html)を参考にしてください．  
+
+以下，Linux環境での説明です．  
 まずコマンドライン上で
 
 ```bash
@@ -33,7 +37,9 @@ git --version
 まずGitHubアカウントを作成していることが大前提となるので，  
 作成していない場合は[公式サイト](https://github.com/)にて，アカウントを作成してください．
 
-GitHubにアクセスするために、`/.gitconfig`に登録済みユーザ名及びメールアドレスを設定します．
+GitHubにアクセスするために、`/.gitconfig`に登録済みユーザ名及びメールアドレスを設定します．  
+
+以下, Windows/Linux共通です．  
 
 ```bash
 git config --global user.name <登録したユーザー名>
@@ -53,6 +59,7 @@ git config --global --list
 [HOME に戻る](../README.md)
 
 ## 公開/秘密鍵の作成
+以下, Windows/Linux共通です．  
 `~/.ssh`配下に公開鍵・秘密鍵を作成します．  
 初めて公開鍵・秘密鍵を作成する場合はディレクトリがなく，初回鍵作成時に作成されます．
 
@@ -81,6 +88,8 @@ Enter passphrase (empty for no passphrase):
 
 ## 公開鍵の登録
 公開・秘密鍵を作成したら，次はGitHubアカウントに公開鍵の登録をします．  
+以下，主にLinux環境での説明となります．  
+
 まず，公開鍵の内容をコピーするため，
 
 ```bash
@@ -88,14 +97,16 @@ cat ~/.ssh/id_rsa.pub
 ```
 
 とコマンドライン上に打ち込み，出力内容をコピーします．  
-(鍵のディレクトリ・名前をデフォルトから変更した場合はこの通りではありませんので，公開鍵が保存されているpathに読み替えてください．)
+(鍵のディレクトリ・名前をデフォルトから変更した場合はこの通りではありませんので，公開鍵が保存されているpathに読み替えてください．)  
+__Windows環境では,__ 直接`C:\Users\<ユーザ名>\.ssh\id_rsa.pub`を開いて内容をコピーしてください．  
 
 次にGitHubをブラウザで開き，GithubアカウントのSettingからSSH and GPG keysを選択し，New SSH keyをクリックします．  
 そこにその鍵の名前(Title)と，Keyに先ほどコピーした内容を貼り付けてAdd SSH Keyをクリックします．  
 ここで，Key typeはデフォルトのAuthentication Keyで問題ありません．
 
 __以下，先ほどデフォルトの名称で鍵生成をしなかった方向けです．__ (ssh接続の際`/.ssh/id_rsa`，`~/.ssh/id_dsa`，`~/.ssh/identity`をデフォルトで見に行くようになっているため)  
-まず，configファイルを作成・編集します．
+まず，configファイルを作成・編集します．  
+以下のコマンドはLinux環境でのコマンドであり，Windows環境ではエクスプローラで直接アクセスし，編集してください．
 
 ```bash
 vim ~/.ssh/config
@@ -117,6 +128,7 @@ IdentityFile "/home/<username>/.ssh/rsa_github"
 [HOME に戻る](../README.md)
 
 ## 接続の確認
+以下，Windows/Linux共通です．  
 コマンドライン上で以下コマンドを実行します．
 
 ```bash
@@ -139,6 +151,7 @@ Hi <username>! You've successfully authenticated, but GitHub does not provide sh
 [HOME に戻る](../README.md)
 
 ## リポジトリにSSH接続
+以下，Windows/Linux共通です．  
 ブラウザでGitHubにて使用するリポジトリを開き，`<> code`をクリックしてからsshを選択し，接続するための文字列をコピーします．  
 コマンドライン上に戻り，これからリモートレポジトリをクローンしたいディレクトリ内で
 
