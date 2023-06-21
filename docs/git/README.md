@@ -34,12 +34,11 @@ git --version
 [HOME に戻る](../README.md)
 
 ## ユーザ名/メールアドレスの設定
+以下, Windows/Linux共通です．  
 まずGitHubアカウントを作成していることが大前提となるので，  
 作成していない場合は[公式サイト](https://github.com/)にて，アカウントを作成してください．
 
 GitHubにアクセスするために、`/.gitconfig`に登録済みユーザ名及びメールアドレスを設定します．  
-
-以下, Windows/Linux共通です．  
 
 ```bash
 git config --global user.name <登録したユーザー名>
@@ -87,8 +86,8 @@ Enter passphrase (empty for no passphrase):
 [HOME に戻る](../README.md)
 
 ## 公開鍵の登録
-公開・秘密鍵を作成したら，次はGitHubアカウントに公開鍵の登録をします．  
 以下，主にLinux環境での説明となります．  
+公開・秘密鍵を作成したら，次はGitHubアカウントに公開鍵の登録をします．  
 
 まず，公開鍵の内容をコピーするため，
 
