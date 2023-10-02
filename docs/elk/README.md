@@ -169,8 +169,8 @@ Set-ExecutionPolicy Restricted -Scope Process
 で元に戻しておきましょう．
 
 #### Metricbeatのセットアップ
-Metricbeatは基本的にインストールするだけでプロセスごとのCPU 使用率・メモリ使用率を収集できます．
----  工事中   ---
+Metricbeatは基本的にインストールするだけでプロセスごとのCPU 使用率・メモリ使用率を収集できます．  
+---  以下，工事中   ---
 
 
 [TOP に戻る](#目次)
