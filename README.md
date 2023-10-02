@@ -1,6 +1,6 @@
 # For_Study_Programming
 This is repository for beginners of programming
 
-## ƒhƒLƒ…ƒƒ“ƒg
+## ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ
 
-ƒhƒLƒ…ƒƒ“ƒg‚Í[‚±‚¿‚ç](./docs/README.md)
+ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã¯[ã“ã¡ã‚‰](./docs/README.md)
