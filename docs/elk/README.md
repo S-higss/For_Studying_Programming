@@ -12,6 +12,9 @@
 - [ログ分析に向けて](#ログ分析に向けて)
     - [logstash.confの設定](#logstashconfの設定)
     - [inputプラグインの設定](#inputプラグインの設定)
+    - [outputプラグインの設定](#outputプラグインの設定)
+    - [filterプラグインの設定](#filterプラグインの設定)
+    - [ログ送信の実行](#ログ送信の実行)
 
 ## Elastic Stackとは
 OSS(Open-source Software)ベースの以下プロダクト群をElasticStackと呼びます(以前はELKと呼んでいた)．  
@@ -68,7 +71,7 @@ curl: (52) Empty reply from server
 Kibanaのインストール手順もElasticsearchのインストールとほぼ同様の手順で行うことができます．  
 zipファイルを[公式サイト](https://www.elastic.co/jp/downloads/kibana)よりダウンロードし，解凍・展開します． 
 
-展開したファイル内で`bin`配下にある`kibana.bat`を実行すると起動します．
+展開したファイル内で`bin`配下にある`kibana.bat`を実行すると起動します．  
 その後ブラウザで`http://localhost:5601`に接続し，GUIが表示されれば完了です．
 
 ### Kibana-Elasticsearch接続確認
@@ -197,14 +200,14 @@ Elasticsearchへのデータ送付以外にもCSV形式など指定した拡張�
 
 ### inputプラグインの設定
 input部分では情報の取得元ごとにプラグインが提供されています．  
-今回はファイルを取得するため，fileプラグインを使います．
+今回はファイルを取得するため，fileプラグインを使います．  
 利用できるプラグインの種類は[公式サイト](https://www.elastic.co/guide/en/logstash/5.4/input-plugins.html)で確認できます．  
 
 inputプラグインの記載例
 ```bash
 input{
     file{
-        path => "/フォルダのフルパス/logs/**.log"
+        path => "\\フォルダのフルパス\\logs\\**.log"
     }
 }
 ```
@@ -232,11 +235,284 @@ start_position => "beginning"
 ```bash
 input{
     file{
-        path => "/フォルダのフルパス/logs/**.log"
+        path => "\\フォルダのフルパス\\logs\\**.log"
         start_position => "beginning"
     }
 }
 ```
+
+#### ファイルにタグをつけて分類する
+読み込んだデータを分類したい場合，自分でタグ(tags)をつけることができます．  
+`tags`を利用すると，if文などを用いて取り込んだデータに対する固定の処理を指定できます．  
+Kibanaのグラフ作成の際に`tags`を指定すると，1つの情報のまとまりごとにデータを分類するグラフを作成できます．  
+`tags => "好きな名前"`または`tags => ["好きな名前1", "好きな名前2", ...]`で指定します．
+
+タグの例
+```bash
+input{
+    file{
+        path => "\\フォルダのフルパス\\logs\\**.log"
+        start_position => "beginning"
+        tags => "log_data"
+    }
+}
+```
+
+#### 取り込み対象以外のファイルを除外する
+zipファイルなど取り込み対象から除外したものがある場合，`exclude`を利用することでLogstashの取り込み対象外のファイルを指定できます．  
+こちらはパス指定は不要で，正規表現を用いて指定できます．
+
+指定例(kobeから始まるtxtファイルを除外)
+```bash
+input{
+    file{
+        path => "\\フォルダのフルパス\\logs\\**.log"
+        start_position => "beginning"
+        tags => "log_data"
+        exclude => "kobe*.txt"
+    }
+}
+```
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+### outputプラグインの設定
+Kibana上でグラフを作成するためにはElasticsearchにデータが入っている必要があります．  
+outputプラグインを用いてデータの送付先を指定しましょう．
+
+#### Elasticsearchにデータを送る
+Elasticsearchにログを送付するにはelasticsearchプラグインを利用します．  
+Elasticsearchのホスト名を指定しない場合，`localhost:9200`にアクセスします．  
+URLを明示的に設定するためには`hosts`を利用します．  
+
+elasticsearchプラグインの指定例(ElasticsearchのURLが10.0.0.100の場合)
+```bash
+output{
+    elasticsearch{
+        hosts => "http://10.0.0.100:9200"
+    }
+}
+```
+
+#### 送付先indexの指定
+Elasticsearchはデータの持ち方が`field`に対する`text`という構造になっています．  
+`field`とは，データベースでのカラムに相当し，`text`はカラム内に入っている実データです．  
+カラム内にデータを入れるように，`field`内に実際のデータ(`text`)を保持します．  
+このデータの集合を`index`といいます．  
+`field`の集合をドキュメントといい，1件分のデータに相当します．
+
+デフォルトのindex名は`logstash-%{+YYYY.MM.dd}`です．  
+elasticseachプラグインの`index`を用いることでindex名を変更できます．  
+1つのElasticsearchに種類の異なるデータを集める場合，データを保存する`index`を明示的に指定し保存すると，`index`とデータの内容を紐づけられるため，データの管理・運用を楽にすることができます．
+
+index名の変更例
+```bash
+output{
+    elasticsearch{
+        hosts => "http://10.0.0.100:9200"
+        # hosts => ["http://localhost:9200"]でも可
+        index => "%{[some_field][sub_field]}-%{+YYYY.MM.dd}"
+    }
+}
+```
+
+他のプラグインを利用することでデータをファイルに出力することも可能です．  
+利用可能なプラグインは[公式サイト](https://www.elastic.co/guide/en/logstash/current/output-plugins.html)に一覧があります．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+
+### filterプラグインの設定
+今までの記述を踏まえると，以下のようなconfファイルになるはずです．
+```bash
+input{
+    file{
+        path => "\\フォルダのフルパス\\logs\\**.log"
+        start_position => "beginning"
+        tags => "log_data"
+        exclude => "kobe*.txt"
+    }
+}
+output{
+    elasticsearch{
+        hosts => "http://10.0.0.100:9200"
+        index => "%{[some_field][sub_field]}-%{+YYYY.MM.dd}"
+    }
+}
+```
+ただし，このままではログは次のようにElasticsearchへ連携されます．
+```bash
+{
+    "path" => "\\フォルダのフルパス\\logs\\**.log",
+    "@timestamp" => 2023-10-01T08:00:00.000Z,
+    "@version" => "1",
+    "host" => "XX.local",
+    "message" => "\"730751058306162689\",\"160512 222643\",\"お腹空いた\"",
+    "tags" => [[0] "log_data"]
+}
+```
+これをこのままKibanaで可視化するのは，field名"host"ではホスト名が丸見えのため抵抗があります．  
+サーバのホスト名ならまだしも，個人PCで起動している場合，自分んおPC情報がKibanaで閲覧できてしまいます．  
+
+さらに，`@timestamp`はUTC時間で出力されており，ログの出力時刻はLogstashにデータが連携された時間となっています．  
+このままではログが出力された本当の時刻と，messageの分割された状態のログが取得できません．
+
+そこで，filterプラグインを用いてログの中身を整形する必要があります．  
+プラグインの一覧は[公式サイト](https://www.elastic.co/guide/en/logstash/current/filter-plugins.html)にまとめられているので，扱うデータに合わせて使用プラグインを変更しましょう．  
+
+また，filterプラグインは記述した順番に処理が行われます．  
+ログの加工順序を考えつつ，filterプラグインを記載するとよいでしょう．  
+
+#### filterプラグインの多重使用
+ログの形式によっては，様々なfilterプラグインが一度に使用する必要がある場合があります．  
+その場合，ログを分割した後にその分割したものにさらにfilterプラグインを適用することができます．
+
+以下，次のログデータが得られると仮定して説明します．
+```bash
+<134>1 2023-05-31T14:59:59Z exampledb CheckPoint 10000 - [action:"Accept"; conn_direction:"Internal"; flags:"0000000"; ifdir:"inbound"; ifname:"eth2"; logid:"0"; loguid:"{aaaaaaaaaa,bbbbbbbbbb,cccccccccc,dddddddddd}"; origin:"192.168.111.222"; originsicname:"CN=example-1,O=exampledb..x7osv4"; sequencenum:"255"; time:"1685545199"; version:"5"; __policy_id_tag:"product=VPN-1 & FireWall-1[db_tag={AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE};mgmt=exampledb;date=1683875804;policy_name=Standard\]"; dst:"192.168.04.10"; lastupdatetime:"1685545199"; log_delay:"1685545199"; layer_name:"Network"; layer_uuid:"aaaaaaaa-bbbb-0000-cccc-dddddddddddd"; match_id:"43"; parent_rule:"0"; rule_action:"Accept"; rule_uid:"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; nat_addtnl_rulenum:"0"; nat_rule_uid:"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"; nat_rulenum:"1"; product:"VPN-1 & FireWall-1"; proto:"17"; s_port:"56160"; service:"53"; service_id:"domain-udp"; src:"192.168.101.111"]
+```
+これはSyslogログ(IETF形式)の一例です．  
+
+これをまずgrokfilterを使用してparseします(__grokパターンの生成はElasticsearchでのログ収集にあたり不可欠であるにもかかわらず，Logstashを利用する上で最難関のconfigであることをここに注意しておく__)．  
+
+よく見てみると，初めにタイムスタンプ等がきて，"[~~]"で囲まれ，key:value形式で表されたmessage部がきていることがわかるため，message部とそれ以外の部分で分けてみることにします．
+
+grokfilterの適用例
+<!-- ```bash
+filter {
+    grok {
+        match => { "message" => "<%{POSINT:syslog_pri}> %{TIMESTAMP_ISO8601:timestamp} %{DATA:hostname} %{WORD:app_name} %{INT:event_id} - \[%{GREEDYDATA:rest}\]
+    }
+}
+``` -->
+```bash
+filter {
+    grok {
+        match => { 
+            "PRI" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+        }
+    }
+    grok {
+        match => {
+            "HEADER" => "%{TIMESTAMP_ISO8601:timestamp} %{DATA:hostname} %{WORD:app_name} %{INT:process_id} - \[%{GREEDYDATA:rest}\]"
+        }
+    }
+}
+```
+ここで，各要素に与えられているall capsの英数字(`TIMESTAMP`等)は，使用できるものが[公式githubリポジトリ](https://github.com/hpcugent/logstash-patterns/blob/master/files/grok-patterns)に公開されているので，要確認です．ここに定義されているgrokパターン以外の表現に対してparseをかけたい場合は，自分で正規表現を作成する必要があります．  
+最後に出現している`GREEDYDATA`という定義はあらゆる文字列を無差別にマッチさせるものであり，一つ目のgrokfilterではこれに`HEADER`というタグをつけることで二つ目のgrokfilterでさらにparseを行えるようにしています．また，二つ目のgrokfilterでは`rest`というタグをつけています．  
+
+次に，restに対して`kvfilter`を適用して，与えられた文字列からkeyとvalueの組を抽出します．  
+この際，オプションを指定することでセパレータを指定できます．  
+
+kvfilterの適用例
+```bash
+filter {
+    grok {
+        match => { 
+            "PRI" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+        }
+    }
+    grok {
+        match => {
+            "HEADER" => "%{TIMESTAMP_ISO8601:timestamp} %{DATA:hostname} %{WORD:app_name} %{INT:process_id} - \[%{GREEDYDATA:rest}\]"
+        }
+    }
+    kv {
+        source => "rest"
+        field_split => "; "
+        value_split => ":"
+        target => "MSG"
+    }
+}
+```
+今回の場合，keyとvalueの組を分割するセパレータは"; "(セミコロンと半角空白)なので，`field_split => "; "`と設定し，keyとvalueの間のセパレータは":"(コロン)なので，`value_split => ":"`と設定できます．  
+最後にオプション`target`によって，抽出したkeyとvalueの組を新しいフィールドである`MSG`に格納しています．
+
+#### ログが出力された時刻を編集する
+ここまでの内容をconfファイルに書き写して実行した結果，
+```bash
+{
+    "@timestamp" => 2023-10-01T08:00:00.000Z,
+    ～略～
+    "time" => "2023-05-31T14:59:59Z",
+    ～略～
+}
+```
+のように，`@timestamp`の時刻は，データを取り込んだ時刻となるというLogstashの仕様によってデータの持つ時刻と差異ができてしまいます．  
+これを解消するためには，`@timestamp`の情報をデータ内の情報で置き換える必要があります．
+
+時刻を変更したい場合はdatefilterを指定します．  
+datefilterにあるmatchオプションを用いることで，どのfieldを時刻として利用するかを決定できます．
+
+datefilterの適用例
+```bash
+filter {
+    ～中略～
+    grok {
+        match => {
+            "HEADER" => "%{TIMESTAMP_ISO8601:timestamp} %{DATA:hostname} %{WORD:log_type} %{INT:event_id} - \[%{GREEDYDATA:rest}\]"
+        }
+    }
+    ～中略～
+    date {
+        match => ["timestamp", "ISO8601"]
+        target => "@timestamp"
+    }
+}
+```
+この設定では，datefilterを使用して`timestamp`フィールドをISO8601形式の日時として解釈し，その値を`@timestamp`に格納します．  
+これにより`timestamp`が`@timestamp`に変換され，Logstashは`@timestamp`をElasticsearchに送信するときのタイムスタンプとして使用します．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+### ログ送信の実行
+以上によって最終的に得られる`logstash.conf`の中身が以下の通りです．
+```bash
+input{
+    file{
+        path => "\\フォルダのフルパス\\logs\\**.log"
+        start_position => "beginning"
+        tags => "log_data"
+        exclude => "kobe*.txt"
+    }
+}
+filter {
+    grok {
+        match => { 
+            "PRI" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+        }
+    }
+    grok {
+        match => {
+            "HEADER" => "%{TIMESTAMP_ISO8601:timestamp} %{DATA:hostname} %{WORD:app_name} %{INT:process_id} - \[%{GREEDYDATA:rest}\]"
+        }
+    }
+    kv {
+        source => "rest"
+        field_split => "; "
+        value_split => ":"
+        target => "MSG"
+    }
+    date {
+        match => ["timestamp", "ISO8601"]
+        target => "@timestamp"
+    }
+}
+output{
+    elasticsearch{
+        hosts => "http://10.0.0.100:9200"
+        index => "%{[some_field][sub_field]}-%{+YYYY.MM.dd}"
+    }
+}
+```
+このconfファイルをlogstash実行時に指定することで，logが分割・整形されてElasticsearchに送信することができます．
 
 [TOP に戻る](#目次)
 
