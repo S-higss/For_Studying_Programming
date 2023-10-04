@@ -17,6 +17,7 @@
     - [ログ送信の実行](#ログ送信の実行)
 - [筆者がハマったところ](#筆者がハマったところ)
     - [logstash.confが正しく書けているのに動作しない](#logstashconfが正しく書けているのに動作しない)
+    - [ログ送信はできるがgrokparsefailureによりparseができない](#ログ送信はできるがgrokparsefailureによりparseができない)
 
 ## Elastic Stackとは
 OSS(Open-source Software)ベースの以下プロダクト群をElasticStackと呼びます(以前はELKと呼んでいた)．  
@@ -209,7 +210,7 @@ inputプラグインの記載例
 ```bash
 input{
     file{
-        path => "\\フォルダのフルパス\\logs\\**.log"
+        path => "/フォルダのフルパス/logs/**.log"
     }
 }
 ```
@@ -237,7 +238,7 @@ start_position => "beginning"
 ```bash
 input{
     file{
-        path => "\\フォルダのフルパス\\logs\\**.log"
+        path => "/フォルダのフルパス/logs/**.log"
         start_position => "beginning"
     }
 }
@@ -253,9 +254,10 @@ Kibanaのグラフ作成の際に`tags`を指定すると，1つの情報のま�
 ```bash
 input{
     file{
-        path => "\\フォルダのフルパス\\logs\\**.log"
+        path => "/フォルダのフルパス/logs/**.log"
         start_position => "beginning"
         tags => "log_data"
+        # tags => ["好きな名前1", "好きな名前2", ...] でも可
     }
 }
 ```
@@ -268,7 +270,7 @@ zipファイルなど取り込み対象から除外したものがある場合�
 ```bash
 input{
     file{
-        path => "\\フォルダのフルパス\\logs\\**.log"
+        path => "/フォルダのフルパス/logs/**.log"
         start_position => "beginning"
         tags => "log_data"
         exclude => "kobe*.txt"
@@ -315,7 +317,7 @@ output{
     elasticsearch{
         hosts => "http://10.0.0.100:9200"
         # hosts => ["http://localhost:9200"]でも可
-        index => "%{[some_field][sub_field]}-%{+YYYY.MM.dd}"
+        index => "sample-%{+YYYY.MM.dd}"
     }
 }
 ```
@@ -333,7 +335,7 @@ output{
 ```bash
 input{
     file{
-        path => "\\フォルダのフルパス\\logs\\**.log"
+        path => "/フォルダのフルパス/logs/**.log"
         start_position => "beginning"
         tags => "log_data"
         exclude => "kobe*.txt"
@@ -342,14 +344,14 @@ input{
 output{
     elasticsearch{
         hosts => "http://10.0.0.100:9200"
-        index => "%{[some_field][sub_field]}-%{+YYYY.MM.dd}"
+        index => "sample-%{+YYYY.MM.dd}"
     }
 }
 ```
 ただし，このままではログは次のようにElasticsearchへ連携されます．
 ```bash
 {
-    "path" => "\\フォルダのフルパス\\logs\\**.log",
+    "path" => "/フォルダのフルパス/logs/**.log",
     "@timestamp" => 2023-10-01T08:00:00.000Z,
     "@version" => "1",
     "host" => "XX.local",
@@ -395,7 +397,7 @@ filter {
 filter {
     grok {
         match => { 
-            "PRI" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+            "message" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
         }
     }
     grok {
@@ -416,7 +418,7 @@ kvfilterの適用例
 filter {
     grok {
         match => { 
-            "PRI" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+            "message" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
         }
     }
     grok {
@@ -479,7 +481,7 @@ filter {
 ```bash
 input{
     file{
-        path => "\\フォルダのフルパス\\logs\\**.log"
+        path => "/フォルダのフルパス/logs/**.log"
         start_position => "beginning"
         tags => "log_data"
         exclude => "kobe*.txt"
@@ -488,7 +490,7 @@ input{
 filter {
     grok {
         match => { 
-            "PRI" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+            "message" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
         }
     }
     grok {
@@ -510,8 +512,9 @@ filter {
 output{
     elasticsearch{
         hosts => "http://10.0.0.100:9200"
-        index => "%{[some_field][sub_field]}-%{+YYYY.MM.dd}"
+        index => "sample-%{+YYYY.MM.dd}"
     }
+    # stdout { codec => rubydebug } を入力して同時に出力確認もできる
 }
 ```
 このconfファイルをlogstash実行時に指定することで，logが分割・整形されてElasticsearchに送信することができます．
@@ -531,6 +534,50 @@ output{
 解決するはずである．  
 [参考資料](https://stackoverflow.com/questions/26441595/input-as-file-path-in-logstash-config)
 
+### ログ送信はできるがgrokparsefailureによりparseができない
+[上の問題](#logstash.confが正しく書けているのに動作しない)を解決した筆者が次にハマってしまった問題は，Elasticsearchにログ送信はできているが，grokのエラーによりparseされずにそのまま生データが送信されているという問題である．  
+一つずつ調査範囲を狭めていきたどり着いた結論は，最初の`match => {"message" => "~~~"}`という部分は変更してはならないということである．  
+
+つまり，
+```bash
+filter {
+    grok {
+        match => { 
+            "message" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+        }
+    }
+    ～略～
+}
+```
+を，以下のように変更してはならないということである．
+```bash
+filter {
+    grok {
+        match => { 
+            "MSG" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+        }
+    }
+    ～略～
+}
+```
+どうやら，最初のフィールドは`"message"`で固定らしく，自分で勝手にフィールド名を変えてはならないようだった．  
+もし，最初のフィールド名を自分の好きなように変えたい場合は，mutatefilterのrenameオプションを利用するとよい．
+
+最初のフィールド名を任意の文字に変えるようにした`logstash.conf`(抜粋)
+```bash
+filter {
+    mutate {
+        rename => { "message" => "PRI" }
+    }
+    grok {
+        match => { 
+            "MSG" => "<%{POSINT:syslog_pri}>%{INT:version} %{GREEDYDATA:HEADER}"
+        }
+    }
+    ～略～
+}
+```
+以上のようにすることで問題は解決された．
 
 [TOP に戻る](#目次)
 
