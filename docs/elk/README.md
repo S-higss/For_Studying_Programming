@@ -43,8 +43,9 @@ Elastic Stackの役割は，Syslogサーバーに保存されているログフ�
 但し，Windows環境であることに注意してください．
 
 ### javaのインストール
-LogstashやElasticsearchのインストールに必要であるjavaをインストールします．  
-詳しくは[環境構築](../env/README.md#javaのインストール)を確認してください．
+~~ElasticsearchやLogstashのインストールに必要であるjavaをインストールします．  
+詳しくは[環境構築](../env/README.md#javaのインストール)を確認してください．~~  
+どうやら最新版(2023.10.05現在)のElasticsearch8.10, Logatash8.10ではJDKがバンドルされているようなので，javaのインストールの必要はないです．
 
 ### Elasticsearchのインストール
 zipファイルを[公式サイト](https://www.elastic.co/jp/downloads/elasticsearch)よりダウンロードします．  
