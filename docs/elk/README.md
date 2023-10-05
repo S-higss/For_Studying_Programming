@@ -15,6 +15,7 @@
     - [outputプラグインの設定](#outputプラグインの設定)
     - [filterプラグインの設定](#filterプラグインの設定)
     - [ログ送信の実行](#ログ送信の実行)
+- [データの消去](#データの消去)
 - [筆者がハマったところ](#筆者がハマったところ)
     - [logstash.confが正しく書けているのに動作しない](#logstashconfが正しく書けているのに動作しない)
     - [ログ送信はできるがgrokparsefailureによりparseができない](#ログ送信はできるがgrokparsefailureによりparseができない)
@@ -296,6 +297,7 @@ elasticsearchプラグインの指定例(ElasticsearchのURLが10.0.0.100の場�
 output{
     elasticsearch{
         hosts => "http://10.0.0.100:9200"
+        # hosts => ["http://localhost:9200"]でも可
     }
 }
 ```
@@ -518,6 +520,40 @@ output{
 }
 ```
 このconfファイルをlogstash実行時に指定することで，logが分割・整形されてElasticsearchに送信することができます．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+## データの消去
+Elasticsearchには，HTTPのAPIが提供されています．  
+データの消去を行うには，curlコマンドを利用して削除します．  
+
+### 全データを削除する方法
+Elasticsearchに保存されている全てのデータを削除するには，以下のコマンドを用います．
+```bash
+# 実行文
+curl -X DELETE http://localhost:9200/*
+# 実行結果
+{"acknowledged":true}
+```
+
+### indexを指定してデータを削除する方法
+Elasticsearchに保存されているデータの一部を削除するのは，index名を指定することで可能です．  
+以下のコマンドにおける`index_name`を削除したいindex名に置き換えてコマンドプロンプトで実行してください．
+```bash
+# 実行文
+curl -X DELETE http://localhost:9200/index_name/
+# 実行結果
+{"acknowledged":true}
+```
+
+### 保存済みindexの取得
+どのようなindex名があるかわからない，確認したい，という場合には以下のコマンドで保存済みのindex名やそのデータ量等を取得できる．
+```bash
+curl -X GET http://localhost:9200/_cat/indices?v
+```
+ちなみに，`_cat`はLinuxのそれ(`cat`: concatenate)とは異なり，Compact and Aligned Text APIの略のようです．
 
 [TOP に戻る](#目次)
 
