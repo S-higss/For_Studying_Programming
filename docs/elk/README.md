@@ -28,7 +28,7 @@ OSS(Open-source Software)ベースの以下プロダクト群をElasticStackと�
 - Beats：各種データ収集，Logstash，Elasticsearchへのデータ出力
 
 関係性を一枚のイメージにまとめた図が以下の通りです．
-![Elastic-Stack関係性](./img/elasticstacks-960x538.webp)
+![Elastic-Stack関係性](./img/elasticstacks-960x538.webp)  
 Elastic Stackの役割は，Syslogサーバーに保存されているログファイルを取得してLogstashでパース，Elasticsearchに取り込み，Kibanaで可視化したり，csvファイルに出力させてSQLサーバーに取りこむことです．
 
 詳しくは[Elastic](https://www.elastic.co/jp/)のサイトへ．
