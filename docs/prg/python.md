@@ -6,6 +6,7 @@ Pythonのインストール方法は[環境構築](../env/README.md#pythonのイ
     - [数字のソート](#数字のソート)
     - [日付文字列のソート](#日付文字列のソート)
 - [リストの比較の実行時間](#リストの比較の実行時間)
+- [Excelファイルの読取](#Excelファイルの読取)
 
 ### ソートについて
 以下，数字および日付文字列のソートについて説明します．
@@ -148,6 +149,76 @@ new_elements = list(set_new - set_old)
 但し，setは[重複する要素をもたない，順序が簡単に予測出来ない要素の集まり](https://docs.python.org/3/library/stdtypes.html?highlight=set#set)であるので，  
 これにより得られる`new_elements`は順序が保証されないことに注意が必要です．
 
+
+[TOP に戻る](#目次)  
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
+
+
+### Excelファイルの読取
+Pythonでは，Excelファイルからデータを取得することを可能とするライブラリが提供されています．  
+Excelファイルを操作するために便利なライブラリとして，`openpyxl`や`pandas`などがあります．  
+どちらのライブラリも`pip install`コマンドでインストールが必要で，`pandas`を使うにしても`openpyxl`のインストールが必要となります．  
+`pandas`は特にデータ解析と操作に優れており，データを効率的に処理するのに適しています．
+
+#### openpyxlを用いる場合
+```bash
+import openpyxl
+
+# Excelファイルを読み込む
+workbook = openpyxl.load_workbook('example.xlsx')
+
+# シートを選択
+sheet = workbook['Sheet1']
+
+# セルの値を読み取る
+cell_value = sheet['A1'].value
+
+# 行や列をイテレートする
+for row in sheet.iter_rows():
+    for cell in row:
+        print(cell.value)
+```
+
+#### pandasを用いる場合
+```bash
+import pandas as pd
+
+# Excelファイルを読み込む
+df = pd.read_excel('example.xlsx')
+
+# DataFrame(df)の内容を表示
+print(df)
+
+# DataFrameの総行数を取得・表示
+row_count = len(df)
+# => これは非常に大きなDataFrameに対しては遅い場合があるため，
+#    row_count = df.shape[0]
+#    がおすすめ．
+#    (shape属性は行数と列数を含むタプルで，行数は0番目の要素に格納されている)
+print(row_count)
+```
+DataFrameからのデータの取り出し方4選
+1. 特定の列（カラム）の選択
+    ```bash
+    # 'column_name' 列を選択
+    selected_column = df['column_name']
+    ```
+2. 特定の行（ロウ）の選択
+    ```bash
+    # インデックス番号 0 の行を選択
+    selected_row = df.loc[0]
+    ```
+3. 特定のセルの値の取得
+    ```bash
+    # 行インデックス 0、列ラベル 'column_name' のセルの値を取得
+    cell_value = df.at[0, 'column_name']
+    ```
+4. 条件に基づいたデータのフィルタリング
+    ```bash
+    # 'column_name' の値が 5 より大きい行を選択
+    filtered_data = df[df['column_name'] > 5]
+    ```
 
 [TOP に戻る](#目次)  
 [Programmingに関して に戻る](README.md)  
