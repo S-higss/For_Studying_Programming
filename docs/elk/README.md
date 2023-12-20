@@ -19,10 +19,10 @@
 - [筆者がハマったところ](#筆者がハマったところ)
     - [logstash.confが正しく書けているのに動作しない](#logstashconfが正しく書けているのに動作しない)
     - [ログ送信はできるがgrokparsefailureによりparseができない](#ログ送信はできるがgrokparsefailureによりparseができない)
-        -[https通信について](#https通信について)
-        -[kibanaの設定について](#kibanaの設定について)
-        -[logstash.confのoutputプラグインについて](#logstashconfのoutputプラグインについて)
-        -[nodeの追加](#nodeの追加)
+        - [https通信について](#https通信について)
+        - [kibanaの設定について](#kibanaの設定について)
+        - [logstash.confのoutputプラグインについて](#logstashconfのoutputプラグインについて)
+        - [nodeの追加](#nodeの追加)
 
 ## Elastic Stackとは
 OSS(Open-source Software)ベースの以下プロダクト群をElasticStackと呼びます(以前はELKと呼んでいた)．  
@@ -715,7 +715,7 @@ https通信を用いた場合，logstash.confのoutputプラグインの入力�
 
     `openssl`コマンドを使用して，`elastic-stack-ca.p12`ファイルからクライアント証明書(`.crt`ファイル)を抽出する．
     ```bash
-    openssl pkcs12 -in elastic-stack-ca.p12 -clcerts -nokeys -out http.crt
+    openssl pkcs12 -in elastic-stack-ca.p12 -clcerts -nokeys -out http_ca.crt
     ```
     この場合，パスワードが空であるためEnterキーを押下するだけで証明書が抽出できる．  
     ここで，証明書は`/elasticsearch-8.11.1/config/certs/http_ca.crt`に保存される(下で必要となる)．
@@ -725,11 +725,11 @@ https通信を用いた場合，logstash.confのoutputプラグインの入力�
     証明書ファイル(`http_ca.crt`)が`/elasticsearch-8.11.1/config/certs/http_ca.crt`に存在し，  
     Elasticsearchへのアクセス権限が適切に設定されているかを確認する．
     ```bash
-    ls -l /etc/elk/http.crt
+    ls -l /etc/elk/http_ca.crt
     ```
     証明書ファイルのパーミッションが適切でない場合は，適切なパーミッションを設定する．
     ```bash
-    chmod 644 /etc/elk/http.crt
+    chmod 644 /etc/elk/http_ca.crt
     ```
     以上の操作によって，LogstashがElasticsearchに対して正常に認証されたセキュアな接続を確立できる．
 
