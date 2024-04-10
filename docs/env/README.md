@@ -316,6 +316,7 @@ MySQLは，そのデータを保存・管理する人気のあるシステムの
 リレーショナルデータベースシステムであるだけでなく，クライアントサーバーモデルも採用しています．
 
 ### Linux環境の場合
+#### Ubuntuの場合
 MuSQLサーバとクライアントツールのインストールを行います．
 ```bash
 sudo apt-get update
@@ -325,6 +326,9 @@ sudo apt-get install mysql-server mysql-client
 ```bash
 mysql --version
 ```
+
+#### Debianの場合
+[こちら](https://ohllengeapplication.com/blog/index.php/2023/11/08/howtoinstallmysql8ondebian12/)を参照してください．
 
 ### Windows環境の場合
 [こちら](https://qiita.com/aki_number16/items/bff7aab79fb8c9657b62)のサイトを参考に実行してください．
