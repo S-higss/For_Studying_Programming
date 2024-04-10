@@ -215,6 +215,7 @@ sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
 ```
+注意：`https://download.docker.com/linux/ubuntu/gpg`に関して，debianなら`https://download.docker.com/linux/debian/gpg`等，各環境によって読み替えてください．  
 
 curlコマンドで，Ubuntuで利用できるDockerのGPG鍵をダウンロードし，標準のOpenGPGエンコーディングに変換，aptのキーリングディレクトリに保存します．  
 chmodは，aptが確実に検出できる様，キーリングファイルに対して権限を設定するコマンドです．
@@ -225,6 +226,7 @@ chmodは，aptが確実に検出できる様，キーリングファイルに対
 ```bash
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
+注意：上に同じく，ubuntuの部分を各環境によって読み替えてください．  
 
 #### 3つの最新版のDocker Community Edition（CE）をインストール
 `docker-ce`：Docker Engineのデーモン

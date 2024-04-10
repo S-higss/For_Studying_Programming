@@ -19,6 +19,10 @@
 - [筆者がハマったところ](#筆者がハマったところ)
     - [logstash.confが正しく書けているのに動作しない](#logstashconfが正しく書けているのに動作しない)
     - [ログ送信はできるがgrokparsefailureによりparseができない](#ログ送信はできるがgrokparsefailureによりparseができない)
+        - [https通信について](#https通信について)
+        - [kibanaの設定について](#kibanaの設定について)
+        - [logstash.confのoutputプラグインについて](#logstashconfのoutputプラグインについて)
+        - [nodeの追加](#nodeの追加)
 
 ## Elastic Stackとは
 OSS(Open-source Software)ベースの以下プロダクト群をElasticStackと呼びます(以前はELKと呼んでいた)．  
@@ -28,7 +32,7 @@ OSS(Open-source Software)ベースの以下プロダクト群をElasticStackと�
 - Beats：各種データ収集，Logstash，Elasticsearchへのデータ出力
 
 関係性を一枚のイメージにまとめた図が以下の通りです．
-![Elastic-Stack関係性](./img/elasticstacks-960x538.webp)
+![Elastic-Stack関係性](./img/elasticstacks-960x538.webp)  
 Elastic Stackの役割は，Syslogサーバーに保存されているログファイルを取得してLogstashでパース，Elasticsearchに取り込み，Kibanaで可視化したり，csvファイルに出力させてSQLサーバーに取りこむことです．
 
 詳しくは[Elastic](https://www.elastic.co/jp/)のサイトへ．
@@ -67,6 +71,10 @@ curl: (52) Empty reply from server
 この解決方法としては，初回実行後`./config/elasticsearch.yml`内に記述されている`xpack.security.enabled`の値を`false`とすることです．  
 このようにすることでJSON形式でレスポンスが返ってくるはずです．
 
+**追記 2023/12/05**   
+このエラーについて，
+xpack.security.enabled: falseで対応していたが，  
+[下](#ストレージを追加しnodeをクラスタに参加させる)で別の対応方法(暗号化されたhttps通信を用いる)が判明したため，そちらを参照されたし．
 
 [TOP に戻る](#目次)
 
@@ -78,6 +86,9 @@ zipファイルを[公式サイト](https://www.elastic.co/jp/downloads/kibana)�
 
 展開したファイル内で`bin`配下にある`kibana.bat`を実行すると起動します．  
 その後ブラウザで`http://localhost:5601`に接続し，GUIが表示されれば完了です．
+
+**追記 2023/12/05**  
+この起動方法に関しても，https通信を用いた場合は方法が異なるため，[下](#ストレージを追加しnodeをクラスタに参加させる)を参照されたし．
 
 ### Kibana-Elasticsearch接続確認
 KibanaからElasticsearchに接続できているかの確認を行うことができます．  
@@ -302,6 +313,8 @@ output{
     }
 }
 ```
+**追記 2023/12/05**  
+このoutputプラグインに関しても，https通信を用いた場合は方法が異なるため，[下](#ストレージを追加しnodeをクラスタに参加させる)を参照されたし．
 
 #### 送付先indexの指定
 Elasticsearchはデータの持ち方が`field`に対する`text`という構造になっています．  
@@ -615,6 +628,154 @@ filter {
 }
 ```
 以上のようにすることで問題は解決された．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+
+### ストレージを追加しnodeをクラスタに参加させる
+あるストレージAにelasticsearch等をインストールしているが，そのストレージAのみでは容量が足りないことがわかり，  
+ストレージBも同時にデータ保存先として使いたい場合に方法がわからず困った．  
+
+解決法を以下に示すのだが，その過程でほかの問題も解決されたのでそれも示す．  
+まずストレージAで`elasticsearch.bat`を新規実行したときに以下のログが出力される．
+```bash
+User
+笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤
+笨・Elasticsearch security features have been automatically configured!
+笨・Authentication is enabled and cluster connections are encrypted.
+
+邃ｹ・・ Password for the elastic user (reset with `bin/elasticsearch-reset-password -u elastic`):
+  <password>
+
+邃ｹ・・ HTTP CA certificate SHA-256 fingerprint:
+  <fingerprint>
+
+邃ｹ・・ Configure Kibana to use this cluster:
+窶｢ Run Kibana and click the configuration link in the terminal when Kibana starts.
+窶｢ Copy the following enrollment token and paste it into Kibana in your browser (valid for the next 30 minutes):
+  <token>
+
+邃ｹ・・ Configure other nodes to join this cluster:
+窶｢ On this node:
+  竅・Create an enrollment token with `bin/elasticsearch-create-enrollment-token -s node`.
+  竅・Uncomment the transport.host setting at the end of config/elasticsearch.yml.
+  竅・Restart Elasticsearch.
+窶｢ On other nodes:
+  竅・Start Elasticsearch with `bin/elasticsearch --enrollment-token <token>`, using the enrollment token that you generated.
+笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤
+```
+なぜか文字化けした状態で出力されたが，それは良いとしてそれ以外の英文に上で発生していた問題も含め答えがあった．  
+このログ(特に<>の部分)はコピーして保存しておくのを推奨する．  
+
+#### https通信について
+まず[curlコマンドが反応しない事象](#elasticsearchのインストール)が発生していたが，  
+これはhttps通信を用いていなかったからであり，こちらのコマンドならば反応があると思われる．
+```bash
+curl -k -u elastic:<password> https://localhost:9200
+```
+このコマンドは，curlを使用してHTTPS経由でlocalhostの9200番ポートにあるElasticsearchに対して認証付きでリクエストを送信するものである．  
+オプションとしては`-k`はサーバー証明書の検証を無効化，`-u`はユーザー名とパスワードを指定するもの．  
+指定されたユーザー名はelasticで、パスワードは`<password>`である．  
+ここでのパスワードは
+```bash
+Password for the elastic user (reset with `bin/elasticsearch-reset-password -u elastic`):
+  <password>
+```
+に表示されている．
+
+
+#### kibanaの設定について
+上の説明では`kibana.bat`を実行し，その後`http://localhost:5601`に接続すればよいとしていたが，  
+https通信を用いた際はこうはいかない．
+
+具体的には，`kibana.bat`を実行した後にあるリンクが表示され，このリンクへ飛ぶことから始まる．  
+このリンク先ではまずtokenを入力することが要求される．ここでのtokenは
+```bash
+ Configure Kibana to use this cluster:
+ Run Kibana and click the configuration link in the terminal when Kibana starts.
+ Copy the following enrollment token and paste it into Kibana in your browser (valid for the next 30 minutes):
+  <token>
+```
+にて提示される`<token>`である．これは __30分間のみ有効__ なので注意である．
+
+その後サインイン画面が表示され，ユーザ名とパスワードが要求される．  
+通常は初回起動時に`elastic`というデフォルトのスーパーユーザが設定されるため，  
+ユーザ名は`elastic`を，パスワードは[先](#https通信について)の`<password>`を入力すればよい．  
+
+後の説明は上のものと同じなので省略する．
+
+#### logstash.confのoutputプラグインについて
+https通信を用いた場合，logstash.confのoutputプラグインの入力方法も変化する．  
+具体的にはユーザ名とパスワードの入力およびSSL証明書のパスの入力が必要となる．  
+まずLogstashからElasticsearchへのセキュアな接続を確立するためのSSL証明書の設定を行う必要がある．  
+以下の手順を用いて証明書を設定する．
+1. `elastic-stack-ca.p12`ファイルから証明書を抽出
+
+    `openssl`コマンドを使用して，`elastic-stack-ca.p12`ファイルからクライアント証明書(`.crt`ファイル)を抽出する．
+    ```bash
+    openssl pkcs12 -in elastic-stack-ca.p12 -clcerts -nokeys -out http_ca.crt
+    ```
+    この場合，パスワードが空であるためEnterキーを押下するだけで証明書が抽出できる．  
+    ここで，証明書は`/elasticsearch-8.11.1/config/certs/http_ca.crt`に保存される(下で必要となる)．
+
+2. ファイルとパーミッションの確認(Linux環境のみ)
+    
+    証明書ファイル(`http_ca.crt`)が`/elasticsearch-8.11.1/config/certs/http_ca.crt`に存在し，  
+    Elasticsearchへのアクセス権限が適切に設定されているかを確認する．
+    ```bash
+    ls -l /etc/elk/http_ca.crt
+    ```
+    証明書ファイルのパーミッションが適切でない場合は，適切なパーミッションを設定する．
+    ```bash
+    chmod 644 /etc/elk/http_ca.crt
+    ```
+    以上の操作によって，LogstashがElasticsearchに対して正常に認証されたセキュアな接続を確立できる．
+
+3. `logstash.conf`の編集
+
+    `logstash.conf`のoutputプラグインに関して以下のように編集し，  
+    Elasticsearchへのサインインに用いるユーザ名，パスワードと新しく作成した証明書ファイルを指定する．
+    ```bash
+    output {
+        elasticsearch {
+            hosts => ["http://localhost:9200"]
+            user => "elastic"
+            password => "<password>"
+            cacert => "/elasticsearch-8.11.1/config/certs/http_ca.crt" # SSL証明書のパスを指定
+        }
+    }
+    ```
+
+#### nodeの追加
+いよいよ本題であるnodeの追加である．  
+前述のストレージAをnode-1，ストレージBをnode-2としたとき，  
+まずnode-1の`./bin`配下にて下のコードを用いてtokenを作成する．
+```bash
+# 入力
+elasticsearch-create-enrollment-token -s node
+# 出力
+<token>
+```
+次に，`./config/elasticsearch.yml`の末尾にある`transport.host`設定のコメントアウトを外す．  
+最後にElasticsearchを再起動する．
+
+次にnode-2にElasticsearchをインストールする．  
+設定ファイル`./config/elasticsearch.yml`を以下のように編集する．  
+```bash
+node.name: node-2                               # 任意のnode名
+network.host: 192.168.xx.xxx
+transport.tcp.port: 9300                        # transport portの指定
+discovery.seed_hosts: ["192.168.xx.xxx:9300"]   # transport portを指定
+cluster.initial_master_nodes: ["node-1", "node-2"]
+```
+先ほど生成したtokenを用いて，`./bin`配下で以下のコードを入力してElasticsearchを開始する．
+```bash
+elasticsearch --enrollment-token <token>
+```
+以上の操作にて正常にElasticsearchが起動すれば完了である．
+
 
 [TOP に戻る](#目次)
 
