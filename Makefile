@@ -1,4 +1,12 @@
 .DEFAULT_GOAL := help
+
+.PHONY: history
+history:	## commit and push all changes from root directory
+	@git add . \
+	&& git commit -m "commit all changes" \
+	&& git push origin HEAD
+
+
 .PHONY: push-all	## カレントディレクトリ以下の全変更を反映
 push-all:
 	git add .
