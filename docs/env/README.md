@@ -7,6 +7,7 @@
 - [makeのインストール](#makeのインストール)
 - [dockerのインストール](#dockerのインストール)
 - [MySQLのインストール](#mysqlのインストール)
+- [Node.jsのインストール](#nodejsのインストール)
 
 ## javaのインストール
 ここではOpen JDKを使用します．  
@@ -46,6 +47,7 @@ javac -version
 [TOP に戻る](#目次)
 
 [HOME に戻る](../README.md)
+
 
 ## Pythonのインストール
 以下はPython3.9の例ですが，
@@ -93,6 +95,7 @@ Python 3.9.16
 [TOP に戻る](#目次)
 
 [HOME に戻る](../README.md)
+
 
 ## pipのインストール
 pipのインストールについては，Python3系がインストールされていることを前提に説明します．
@@ -159,6 +162,7 @@ export PATH=$PATH:~/.local/bin
 
 [HOME に戻る](../README.md)
 
+
 ## makeのインストール
 makeは主として，C言語やC++などコンパイル型のプログラミング言語で記述されたプログラムを容易にビルドするためのツールです．  
 コマンドラインでの実行の簡略化のためMakefileを配置し使用できます．
@@ -194,8 +198,8 @@ make -version
 
 [HOME に戻る](../README.md)
 
-## dockerのインストール
 
+## dockerのインストール
 
 ### Linux環境の場合
 aptを利用してインストールする場合を説明します．
@@ -307,6 +311,7 @@ Docker Desktopをインストールします．
 
 [HOME に戻る](../README.md)
 
+
 ## MySQLのインストール
 Oracleが開発・サポートするオープンソースのSQLリレーショナルデータベース管理システムです．  
 データベースは，データを簡単に使用したり取得したりできるように，そのデータをまとめて構造化したものです．  
@@ -332,3 +337,80 @@ mysql --version
 
 ### Windows環境の場合
 [こちら](https://qiita.com/aki_number16/items/bff7aab79fb8c9657b62)のサイトを参考に実行してください．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+
+## Node.jsのインストール
+- Node.jsとは  
+    ブラウザ上という制限された環境でしか動けなかったJavaScriptを，PythonやRubyのようにパソコン上で動かせるようにしてくれるアプリケーションであり，  
+    JavaScript実行環境です．  
+    WindowsにPythonをインストールすると「python.exe」ができるように，Node.jsをインストールすると「node.exe」ができます．
+
+- npmとは  
+    npmはNode.jsのパッケージ管理ツールです．  
+    例：Pythonにおけるpip，Rubyにおけるgem(RubyGems)，Debianにおけるapt，MacにおけるHomebrew，Rustにおけるcargoなどなど．  
+    たまにyarnというのが出てきますがほぼnpmと同じです．
+
+    「パッケージ」というのはライブラリやフレームワークのことです．  
+    つまりVueやReact, webpack, jQueryなどのことです．  
+
+    Node.jsで使いたいライブラリがある場合，jsファイルをダウンロードしてきて
+    ```bash
+    <script src="xxx.js"></script>
+    ```
+    って書いて……のようにすることなく，npmを使ってインストールできます．
+
+### Linux環境の場合
+aptを利用してインストールする場合を説明します．
+
+#### Linuxディストリビューションの公式パッケージでNode.jsとnpmを入れる
+
+```bash
+sudo apt update
+sudo apt install nodejs npm
+```
+
+#### インストールされたかの確認
+次のコマンドを実行し，nodeのバージョン情報が出ればインストール完了です．
+```bash
+sudo node -v 
+```
+
+#### 最新のNode.jsを入れる
+次のコマンドを実行し，最新のNode.jsがインストールされます．
+```bash
+sudo npm install n -g
+```
+
+### Windows/macOS環境の場合
+インストーラを用いてインストールします．  
+
+#### インストーラのダウンロード
+[公式サイト](https://nodejs.org/en/download/prebuilt-installer)から，インストーラをダウンロードします．  
+__ここで注意__ : 公式サイトではLTSバージョンのものをダウンロードしてください．私の場合，CURRENTをダウンロードし，`npm`コマンドが使えませんでした．
+
+- LTSとは  
+    Long-term Supportの略で，長期の保守運用が約束されたバージョンです．
+- CURRENTとは  
+    最新版であるが，安定性を約束しないことで機能追加を盛り込んだバージョンです．
+
+#### インストーラの実行
+基本的にはデフォルトのまま進んでください．  
+Tools for Native Modulesのチェックボックスも，ネイティブモジュール用のツールは必要なければチェックを入れなくてOKです．  
+
+#### インストールの確認
+コマンドプロンプトにて次のコマンドを実行し，バージョン情報が表示されればNode.jsのインストール完了です．
+```bash
+Node --version
+```
+最後に，npmコマンドを確認しておきましょう．
+```bash
+npm -v
+```
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
