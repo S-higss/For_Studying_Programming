@@ -474,6 +474,16 @@ rbenv global 3.2.4
 ruby -v
 ```
 
+#### SQLite3のインストール
+SQLite3は，MySQLと同じくオープンソースのデータベース管理システムであり，軽量であるのが特徴です．
+```bash
+sudo apt-get install libsqlite3-dev
+```
+インストールされたか確認
+```bash
+sqlite3 -version
+```
+
 #### Railsのインストール
 gemを使用して，Railsのバージョン指定をしインストールします(今回は7.0.4.3を指定)．  
 gemとは，gem形式にパッケージングされたRuby言語用の外部ライブラリを指します．
@@ -499,6 +509,7 @@ bundler -v
 
 ### Windows環境の場合
 #### Rubyのインストール
+まず，Rubyをインストールします．
 1. [RubyInstaller](https://rubyinstaller.org/downloads/)のサイト内の「WITH DEVKIT」から好きなバージョンをクリックし，インストーラをダウンロードします．
    
 2. インストーラを実行し，Rubyのインストールを行います．
@@ -526,7 +537,6 @@ bundler -v
 
 #### SQLite3のインストール
 次に，SQLite3をインストールします．  
-SQLite3は，MySQLと同じくオープンソースのデータベース管理システムであり，軽量であるのが特徴です．
 1. [SQLite3](https://sqlite.org/index.html)のサイトを開き，「Download」をクリックします．
    
 2. 「Precompiled Binaries for Windows」の欄にある「sqlite-dll」というファイルをクリックしてダウンロードします．
