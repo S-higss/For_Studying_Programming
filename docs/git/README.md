@@ -3,11 +3,15 @@
 ssh接続する手順を紹介しています．
 
 ## 目次
-- [Gitのインストール](#gitのインストール)
-- [ユーザ名/メールアドレスの設定](#ユーザ名メールアドレスの設定)
-- [公開/秘密鍵の作成](#公開秘密鍵の作成)
-- [公開鍵の登録](#公開鍵の登録)
-- [リポジトリにSSH接続](#リポジトリにssh接続)
+- [GitHubリモートレポジトリへpushするまで](#githubリモートレポジトリへpushするまで)
+  - [目次](#目次)
+  - [Gitのインストール](#gitのインストール)
+  - [ユーザ名/メールアドレスの設定](#ユーザ名メールアドレスの設定)
+  - [公開/秘密鍵の作成](#公開秘密鍵の作成)
+  - [公開鍵の登録](#公開鍵の登録)
+  - [接続の確認](#接続の確認)
+  - [リポジトリにSSH接続](#リポジトリにssh接続)
+  - [devcontainerからpushする](#devcontainerからpushする)
 
 
 ## Gitのインストール 
@@ -164,3 +168,44 @@ git clone git@github.com:xxxx/test-repository.git
 [TOP に戻る](#目次)
 
 [HOME に戻る](../README.md)
+
+## devcontainerからpushする
+VS CodeのRemote Container拡張を使って開発するとdevcontainer内部からgitを扱うこともできます．  
+WSLのLinux環境にて，devcontainerで開発しているときに`git push`すると，以下のようなエラーが吐き出されました．
+```bash
+$ git push origin HEAD
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+devcontainerには，`.gitconfig`が自動でコピーされていますが，  
+GitHubにpushするのにSSHキーを使う場合，必要なSSHキーも共有する必要があります．  
+これに関して，VSCode公式サイトの[Sharing git credentials](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials#_using-ssh-keys)で紹介されていますが，ハマったのでまとめておきます．
+
+まず，
+```bash
+vi ~/.bashrc
+```
+を行い，末尾に以下を記述します．
+```bash
+eval "$(ssh-agent -s)"
+if [ -z "$SSH_AUTH_SOCK" ]; then
+   # Check for a currently running instance of the agent
+   RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
+   if [ "$RUNNING_AGENT" = "0" ]; then
+        # Launch a new instance of the agent
+        ssh-agent -s &> $HOME/.ssh/ssh-agent
+   fi
+   eval `cat $HOME/.ssh/ssh-agent`
+fi
+eval `ssh-add $HOME/.ssh/id_rsa`
+eval `ssh-add $HOME/.ssh/id_rsa > /dev/null 2>&1`
+```
+ここで，SSHキーのpathは先ほど[公開/秘密鍵の作成](#公開秘密鍵の作成)で作成した秘密鍵のものを用いてください．  
+その後，
+```bash
+source ~/.bashrc
+```
+で読み込みなおすと，devcontainer内でのpushが可能となります．
