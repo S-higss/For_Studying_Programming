@@ -491,6 +491,15 @@ gem install rails -v "7.0.4.3"
 ```bash
 rails -v
 ```
+Railsのインストール完了時に，以下のような表示がなされる場合があります．
+```bash
+A new release of RubyGems is available: 3.4.19 → 3.5.15!
+Run `gem update --system 3.5.15` to update your installation.
+```
+この場合は素直に表示に従って，以下のコマンドを用いてgemのアップデートを行いましょう．
+```bash
+gem update --system 3.5.15
+```
 
 #### bundlerのインストール
 こちらもgemを使用して，バージョン指定をしインストールします(今回は2.5.6を指定)．  
