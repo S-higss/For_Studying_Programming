@@ -28,3 +28,21 @@ Webアプリケーションのディレクトリをどう構成するかは本�
 | Gemfile.lock | このアプリケーションで使われるGemの詳細ファイル（自動で生成） |
 | config.ru | Rackミドルウェア用の設定ファイル |
 | .gitignore | Gitに取り込みたくないファイルを指定するためのファイル |
+
+## railsコマンドの短縮形について
+例えば，静的なページを扱うコントローラを`StaticPages`のように命名し，これを生成する場合，
+```bash
+rails generate controller StaticPages
+```
+というように，`generate`スクリプトで実行できます．  
+この`rails generate`は，`rails g`という短縮形でも動作します．  
+このような短縮形は，Railsにおいて他にも多数サポートしています．
+
+以下に主なコマンドとその短縮形を示します．
+| __完全なコマンド__ | __短縮形__ |
+| ---- | ---- |
+| `$ rails server` | `$ rails s` |
+| `$ rails console` | `$ rails c` |
+| `$ rails generate` | `$ rails g` |
+| `$ rails test` | `$ rails t` |
+| `$ bundle install` | `$ bundle` |
