@@ -475,13 +475,10 @@ ruby -v
 ```
 
 #### SQLite3のインストール
+apt-getを利用してSQLite3をインストールします．  
 SQLite3は，MySQLと同じくオープンソースのデータベース管理システムであり，軽量であるのが特徴です．
 ```bash
 sudo apt-get install libsqlite3-dev
-```
-インストールされたか確認
-```bash
-sqlite3 -version
 ```
 
 #### Railsのインストール
