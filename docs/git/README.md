@@ -184,6 +184,13 @@ devcontainerには，`.gitconfig`が自動でコピーされていますが，
 GitHubにpushするのにSSHキーを使う場合，必要なSSHキーも共有する必要があります．  
 これに関して，VSCode公式サイトの[Sharing git credentials](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials#_using-ssh-keys)で紹介されていますが，ハマったのでまとめておきます．
 
+この節で行いたいことは，この通りです．
+```bash
++--------------+     +-----------------+     +--------+
+| devcontainer | --> | Host(ssh-agent) | --> | GitHub |
++--------------+     +-----------------+     +--------+
+```
+
 まず，
 ```bash
 vi ~/.bashrc
