@@ -8,6 +8,7 @@
 - [dockerのインストール](#dockerのインストール)
 - [MySQLのインストール](#mysqlのインストール)
 - [Node.jsのインストール](#nodejsのインストール)
+- [Ruby on Rails環境構築](#ruby-on-rails環境構築)
 
 ## javaのインストール
 ここではOpen JDKを使用します．  
@@ -414,3 +415,129 @@ npm -v
 [TOP に戻る](#目次)
 
 [HOME に戻る](../README.md)
+
+
+## Ruby on Rails環境構築
+Ruby on Rails(略称"Rails")は，プログラミング言語"Ruby"で書かれたフリーかつオープンソースのWeb開発フレームワークです．
+
+Rubyはオープンソースの動的なプログラミング言語で，シンプルさと高い生産性を備えています．   
+エレガントな文法を持ち，自然に読み書きができます．
+
+Railsは本格的なWebサービスを開発するツールとして急速に有名になり，海外ではGitHubやShopify，DisneyやApple，AirbnbやSoundCloud，イギリス政府などで採用され，ドイツの政府系ファンド（STF）もRuby/Railsを支援しています．
+
+また日本国内でもCookpadやnote，freeeやマネーフォワード，YAMAPやCrowdWorks，QiitaやZenn，Game8やアカツキ，pixivやSTORES，駅すぱあとやスタディサプリ，自治体に導入されているつながる相談などで採用されています．Rubyを採用している上場企業は45社以上にのぼり，2021年にはRailsを使い続けるGitLabも約1.2兆円の時価総額で上場，2024年のRails求人数も右肩上がりとなっています．
+
+Webサービス開発にはRails以外にも多くの選択肢がありますが，Railsのアプローチは豪快かつ強力で，個人開発から上場まで幅広い場面に使えます．初めてWebサービスを作る個人にとってはRailsの標準機能だけで開発でき，大成功したときも高い拡張性を兼ね備えています．また大企業がシングルページアプリケーション（SPA）やモバイルアプリと組み合わせて開発したい場面でも，Railsは素晴らしいバックエンドを提供できます．
+
+__注意点__  
+RailsとRubyとで対応バージョンがある程度決まっており，古いと上手くいきませんので気を付けて下さい．  
+以下対応表になります．
+| __Rails version__ | __Ruby version__ |
+| ---- | ---- |
+| Rails 7 | Ruby 2.7.0以降が必須 |
+| Rails 6 | Ruby 2.5.0以降が必須 |
+| Rails 5 | Ruby 2.2.2以降が必須 |
+
+### Linux環境の場合
+apt-getを利用してインストールする場合を説明します．
+```bash
+sudo apt-get update -y
+sudo apt-get install ruby-full
+```
+でインストールできますが，最新版ではない可能性が高いです．  
+バージョン指定してインストールを行いたい場合は以下の通りに実施してください．
+
+
+#### 必要なツールのダウンロード
+```bash
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install build-essential -y
+sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev libffi-dev libyaml-dev
+```
+
+#### Rubyのインストール
+```bash
+git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL -l
+git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+```
+Rubyのバージョン指定をしてインストールします(今回は3.2.4を指定)．
+```bash
+rbenv install 3.2.4
+rbenv global 3.2.4
+```
+インストールされたか確認
+```bash
+ruby -v
+```
+
+#### Railsのインストール
+gemを使用して，Railsのバージョン指定をしインストールします(今回は7.0.4.3を指定)．  
+gemとは，gem形式にパッケージングされたRuby言語用の外部ライブラリを指します．
+```bash
+gem install rails -v "7.0.4.3"
+```
+インストールされたか確認
+```bash
+rails -v
+```
+
+#### bundlerのインストール
+こちらもgemを使用して，バージョン指定をしインストールします(今回は2.5.6を指定)．  
+bundlerとは，gem同士の依存関係を管理するためのツールで，bundler自体もgemの一種です．  
+bundlerを使うことで，依存関係にあるgemを一括インストールすることができます．
+```bash
+gem install bundler -v 2.5.6
+```
+インストールされたか確認
+```bash
+bundler -v
+```
+
+### Windows環境の場合
+#### Rubyのインストール
+1. [RubyInstaller](https://rubyinstaller.org/downloads/)のサイト内の「WITH DEVKIT」から好きなバージョンをクリックし，インストーラをダウンロードします．
+   
+2. インストーラを実行し，Rubyのインストールを行います．
+   
+3. インストール完了後，自動的にコマンドプロンプトが起動し，
+    ```bash
+    Which components shall be installed? If unsure press ENTER [1,3]
+    ```
+    と表示されるので，
+    ```bash
+    1,3
+    ```
+    を入力します．  
+    全ての実行が完了すると，
+    ```bash
+    Which components shall be installed? If unsure press ENTER []
+    ```
+    と表示されるので，そのままEnterキーを押下します．
+
+4. 以上でRubyをinstallする作業は完了となるので，最後に
+    ```bash
+    ruby -v
+    ```
+    でインストールを確認しておきます．
+
+#### SQLite3のインストール
+次に，SQLite3をインストールします．  
+SQLite3は，MySQLと同じくオープンソースのデータベース管理システムであり，軽量であるのが特徴です．
+1. [SQLite3](https://sqlite.org/index.html)のサイトを開き，「Download」をクリックします．
+   
+2. 「Precompiled Binaries for Windows」の欄にある「sqlite-dll」というファイルをクリックしてダウンロードします．
+   
+3. ダウンロードが完了しましたらフォルダを開き，「sqlite3.dll」を「C:¥Ruby26-x64¥bin」へコピーします．
+   
+4. 先程のSQLite3 のダウンロードページに戻り，「sqlite-tools-win32-x86-3410100.zip」というファイルもダウンロードします．
+   
+5. ダウンロードが完了しましたらフォルダを開き，「sqlite3.exe」を先程同様「C:¥Ruby26-x64¥bin」へコピーします．
+   
+6. 以上でSQLite3のインストールは完了です．
+
+#### Ruby on Railsのインストール
+以降はLinuxの場合と同様となるので，[Railsのインストール](#Railsのインストール)以下を参考にしてください．
