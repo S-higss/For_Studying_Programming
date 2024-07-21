@@ -11,6 +11,7 @@ ssh接続する手順を紹介しています．
   - [公開鍵の登録](#公開鍵の登録)
   - [接続の確認](#接続の確認)
   - [リポジトリにSSH接続](#リポジトリにssh接続)
+  - [ローカル作成branchをリモートにpushする際の小ネタ](#ローカル作成branchをリモートにpushする際の小ネタ)
   - [devcontainerからpushする](#devcontainerからpushする)
 
 
@@ -164,6 +165,40 @@ git clone git@github.com:xxxx/test-repository.git
 
 を実行すれば，リポジトリが紐づけられ，作業が可能になります．  
 ここで，`git@github.com:xxxx/test-repository.git`は，先ほどGitHubにてコピーした接続するための文字列です．
+
+[TOP に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+
+## ローカル作成branchをリモートにpushする際の小ネタ
+ローカルで複製したbranchをリモートリポジトリにpushする際の小ネタを紹介します．
+
+以下のようにブランチをローカルで複製した際，
+```bash
+git checkout -b "feature/xx"
+or
+git switch -c feature/xx
+```
+このブランチにて行った変更をリモートリポジトリにアップロードする際，
+```bash
+git push origin feature/xx
+```
+というようにブランチ指定してpushができますが，現在のブランチが`feature/xx`である場合は，
+```bash
+git push origin HEAD
+```
+で代用できます．  
+ここまではよく知られた小ネタですが，更に初めて行うpushを
+```bash
+git push -u origin HEAD
+```
+とすることによって，ローカルブランチ`feature/xx`をリモートレポジトリに紐づけができます．  
+これにより，以降のpushは
+```bash
+git push
+```
+のみで可能となります．
 
 [TOP に戻る](#目次)
 
