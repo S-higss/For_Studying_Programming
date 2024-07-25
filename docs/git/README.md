@@ -205,7 +205,8 @@ git push
 [HOME に戻る](../README.md)
 
 ## devcontainerからpushする
-VS CodeのRemote Container拡張を使って開発するとdevcontainer内部からgitを扱うこともできます．  
+VS CodeのRemote Container拡張を使って開発するとdevcontainer内部からgitを扱うこともできます． 
+参考：https://blog.kinto-technologies.com/posts/2022-12-10-VSCodeDevContainer/  
 WSLのLinux環境にて，devcontainerで開発しているときに`git push`すると，以下のようなエラーが吐き出されました．
 ```bash
 $ git push origin HEAD
