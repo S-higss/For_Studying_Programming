@@ -2,6 +2,7 @@
 Pythonのインストール方法は[環境構築](../env/README.md#pythonのインストール)を確認してください．
 
 ## 目次
+- [requirements.txtを使ってパッケージ一括インストール](#requirements.txtを使ってパッケージ一括インストール)
 - [f文字列について](#f文字列について)
 - [ソートについて](#ソートについて)
     - [数字のソート](#数字のソート)
@@ -9,7 +10,42 @@ Pythonのインストール方法は[環境構築](../env/README.md#pythonのイ
 - [リストの比較の実行時間](#リストの比較の実行時間)
 - [Excelファイルの読取](#Excelファイルの読取)
 
-### f文字列について
+[TOP に戻る](#目次)  
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
+
+
+## requirements.txtを使ってパッケージ一括インストール
+Pythonのパッケージ（ライブラリ）をpipで管理している場合，  
+設定ファイル`requirements.txt`を使って指定のパッケージを指定のバージョンで一括インストールできます．
+
+### pipの一括インストール
+以下のコマンドにより設定ファイルrequirements.txtを読み込んでパッケージが一括でインストールされます．
+```bash
+pip install -r requirements.txt
+```
+設定ファイル名は任意ですが，`requirements.txt`という名前が使われることが多いです．
+
+上記コマンド実行の際は`requirements.txt`はコマンドを実行するディレクトリに置いておきます．  
+別ディレクトリにある場合は，パスを指定してください．
+
+### 現在の環境の設定ファイルを書き出し
+pip freezeコマンドで現在の環境にインストールされたパッケージとバージョンが`pip install -r`で使える設定ファイルの形式で出力されます．
+
+つまり，`pip freeze`をリダイレクト`>`でファイルに出力することで，  
+そのファイルを使って元の環境と同じバージョンのパッケージを別環境に一括でインストールできるというわけです．
+```bash
+pip freeze > requirements.txt
+```
+この`requirements.txt`を別の環境にコピーして一括インストールすることが可能です．
+
+
+[TOP に戻る](#目次)  
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
+
+
+## f文字列について
 主にデバッグ用途で新規に実装されたf-stringsの機能の小ネタを紹介します．  
 例えば，
 ```bash
@@ -25,10 +61,15 @@ print(f"{x=})
 ```
 こちらの機能はPython3.8より実装されています．
 
-### ソートについて
+[TOP に戻る](#目次)  
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
+
+
+## ソートについて
 以下，数字および日付文字列のソートについて説明します．
 
-#### 数字のソート
+### 数字のソート
 まず数字のソートについて説明します．  
 今，手元に`unsorted_numbers`というリストが以下のようにあり，これを`sorted_numbers`のように昇順に直すとします．
 ```bash
@@ -81,7 +122,7 @@ print(reverse_sorted)
 これは次項で紹介します．
 
 
-#### 日付文字列のソート
+### 日付文字列のソート
 次に日付文字列のソートについて説明します．  
 今，手元に`unsorted_dates`というリストが以下のようにあり，これを`sorted_dates`のように昇順に直すとします．
 ```bash
@@ -126,7 +167,7 @@ date_objects.sort(reverse=True)
 [HOME に戻る](../README.md)
 
 
-### リストの比較の実行時間
+## リストの比較の実行時間
 今，手元に`list_old`というリストがあり，新しく`list_new`を得たとします．  
 それぞれの要素の内容は以下の通りです．
 ```bash
@@ -172,13 +213,13 @@ new_elements = list(set_new - set_old)
 [HOME に戻る](../README.md)
 
 
-### Excelファイルの読取
+## Excelファイルの読取
 Pythonでは，Excelファイルからデータを取得することを可能とするライブラリが提供されています．  
 Excelファイルを操作するために便利なライブラリとして，`openpyxl`や`pandas`などがあります．  
 どちらのライブラリも`pip install`コマンドでインストールが必要で，`pandas`を使うにしても`openpyxl`のインストールが必要となります．  
 `pandas`は特にデータ解析と操作に優れており，データを効率的に処理するのに適しています．
 
-#### openpyxlを用いる場合
+### openpyxlを用いる場合
 ```bash
 import openpyxl
 
@@ -197,7 +238,7 @@ for row in sheet.iter_rows():
         print(cell.value)
 ```
 
-#### pandasを用いる場合
+### pandasを用いる場合
 ```bash
 import pandas as pd
 
