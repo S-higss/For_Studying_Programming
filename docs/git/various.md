@@ -13,25 +13,40 @@
 [TOP に戻る](./README.md)  
 [HOME に戻る](../README.md)
 
+
 ## featureブランチでも`git push`を可能にする
-masterから切ったfeatureブランチで作業をしている際にremoteへpushするには，  
+ローカルで複製したbranchをリモートリポジトリにpushする際の小ネタを紹介します．
+
+以下のようにブランチをローカルで複製した際，
 ```bash
-git push origin feature
-# もしくは
+git checkout -b "feature/xx"
+or
+git switch -c feature/xx
+```
+このブランチにて行った変更をリモートリポジトリにアップロードする際，
+```bash
+git push origin feature/xx
+```
+というようにブランチ指定してpushができますが，現在のブランチが`feature/xx`である場合は，
+```bash
 git push origin HEAD
 ```
-を行う必要があります．
+で代用できます．  
 
 masterでのpushは`git push`で事足りるのに，  
-その後のオプションをつける必要があり，  
-手間に感じませんか(私はこれしか方法を知らなかったため手間に感じました)．
+上の代用でもその後の`origin HEAD`を記述する必要があり手間に感じませんか．  
+(私はこれしか方法を知らなかったため手間に感じました)．
 
-これを解決するには，初回のpushで
+そこで更に初めて行うpushを
 ```bash
 git push -u origin HEAD
 ```
 として，`-u`オプションをつけることで`feature`と`origin/feature`が紐づくことになり，  
-以後のpushは`git push`だけでremoteにアップロードができるようになります．
+以降のpushは
+```bash
+git push
+```
+のみの実行でremoteにアップロードができるようになります．
 
 ### 補足
 `-u`オプションは，`--set-upstream`と同じであり，  
@@ -45,7 +60,8 @@ git push -u origin HEAD
 [HOME に戻る](../README.md)
 
 ## devcontainerからpushする
-VS CodeのRemote Container拡張を使って開発するとdevcontainer内部からgitを扱うこともできます．  
+VS CodeのRemote Container拡張を使って開発するとdevcontainer内部からgitを扱うこともできます． 
+参考：https://blog.kinto-technologies.com/posts/2022-12-10-VSCodeDevContainer/  
 WSLのLinux環境にて，devcontainerで開発しているときに`git push`すると，以下のようなエラーが吐き出されました．
 ```bash
 $ git push origin HEAD
