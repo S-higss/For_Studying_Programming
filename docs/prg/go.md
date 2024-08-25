@@ -99,10 +99,100 @@ goのコードファイルは必ず特定のパッケージに所属する．
     ```
 
 ### その他もろもろ小ネタ
-- errors.New()とは  
-    errorsパッケージのNewという関数を使用したものであり，  
-    引数にエラーメッセージとなる文字列を受け取り，エラー型を返す．  
-    エラーメッセージをカスタマイズしたい場合は、事前にエラーメッセージとなる文字列を作っておく必要がある．
-    - メリット
-        - 既にエラー出力したい文字列が用意されている時には便利
-        - シンプルなエラーを生成したい時に便利
+#### errors.New()とは  
+errorsパッケージのNewという関数を使用したものであり，  
+引数にエラーメッセージとなる文字列を受け取り，エラー型を返す．  
+エラーメッセージをカスタマイズしたい場合は、事前にエラーメッセージとなる文字列を作っておく必要がある．
+- メリット
+    - 既にエラー出力したい文字列が用意されている時には便利
+    - シンプルなエラーを生成したい時に便利
+
+#### 関数名は必ずcapitalizeせよ  
+例えば以下のようなディレクトリ構成を考える。
+```bash
+sample
+├──foo.go
+└──bar.go
+```
+foo.go
+```
+package main
+
+import "fmt"
+
+func main(){
+    fmt.Println(add(3,5))
+}
+```
+bar.go
+```bash
+package main
+
+func add(a int, b int) int {
+    return a + b
+}
+```
+この場合，単にmainパッケージのファイルを2つに分けただけであるため，
+```bash
+~\sample$ go build
+~\sample$ .\sample
+```
+で実行可能であるが，このディレクトリ構成を
+```bash
+sample
+├──foo.go
+└──sub
+   └── bar.go
+```
+のようにsubパッケージを適用して変更し，
+foo.go
+```bash
+package main
+
+import (
+	"fmt"
+	"sample/sub"
+)
+
+func main(){
+	fmt.Println(sub.add(3,5))
+}
+```
+sub/bar.go
+```bash
+package sub
+
+import "fmt"
+
+func add(a int, b int) int {
+	return a + b
+}
+```
+のようにしたとしても，実は動かない．  
+というのも外部パッケージとして外部から参照可能な関数の名前はcapitalizeされている必要があるためである．  
+Goにおいてcapitalizeで関数を作成することで外部から可視状態にする(:Go用語でexported=エクスポートされた)ことができる一方でdecapitalizeすることで内部からのみ参照される関数とすることができる，  
+従って，
+foo.go
+```bash
+package main
+
+import (
+	"fmt"
+	"sample/sub"
+)
+
+func main(){
+	fmt.Println(sub.Add(3,5))
+}
+```
+sub/bar.go
+```bash
+package sub
+
+import "fmt"
+
+func Add(a int, b int) int {
+	return a + b
+}
+```
+とする必要があるのである．
