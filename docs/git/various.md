@@ -193,3 +193,28 @@ git remote set-url origin git@github.com:USERNAME/YOURREPOSITORY.git
 [TOP に戻る](./README.md)
 
 [HOME に戻る](../README.md)
+
+## developでpullすると自分の編集していないファイルが差分として出てくる
+ある時、developで`git pull`を行うと、
+```bash
+Encountered 2 files that should have been pointers, but weren't:
+public/images/xxxx.png
+public/images/yyyy.png
+```
+のように表示され、これをcommitしてpushしない限りbranch移動さえもできない状況となった。  
+これらのファイルは自分が編集したわけではなく、共同編集者(他グループ)が編集したもので、  
+これをpushしてしまうと彼らの修正が変更されてしまうことになる。これは避けたい。  
+だが以下のどのコマンドを打ち込んでも解決はしなかった。  
+- `git fetch origin`
+- `git merge origin develop`
+- `git reset --hard HEAD`
+- `git reset --hard origin/develop`
+- `git pull --rebase origin develop`
+このような時は、以下のコマンドが役立つ。
+```bash
+git rm --cached -r .
+git reset --hard
+```
+前者のコマンドは、リポジトリ内のすべてのファイルをインデックス（ステージングエリア）から削除するが、ワーキングディレクトリからは削除しない。  
+これは、次のコミットでこれらのファイルがリポジトリから削除されることを意味する。  
+その後強制的にリセットをかけることで元に戻る。
