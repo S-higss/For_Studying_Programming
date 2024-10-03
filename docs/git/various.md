@@ -8,6 +8,8 @@
 - [devcontainerからpushする](#devcontainerからpushする)
 - [masterブランチのdbデータをfeatureブランチに上書き](#masterブランチのdbデータをfeatureブランチに上書き)
 - [Authenticationのエラーによりpushできない](#authenticationのエラーによりpushできない)
+- [developでpullすると自分の編集していないファイルが差分として出てくる](#developでpullすると自分の編集していないファイルが差分として出てくる)
+- [PRに際して多過ぎるcommitを一つにまとめる](#PRに際して多過ぎるcommitを一つにまとめる)
 
 
 [TOP に戻る](./README.md)  
@@ -209,7 +211,7 @@ public/images/yyyy.png
 - `git merge origin develop`
 - `git reset --hard HEAD`
 - `git reset --hard origin/develop`
-- `git pull --rebase origin develop`
+- `git pull --rebase origin develop`  
 このような時は、以下のコマンドが役立つ。
 ```bash
 git rm --cached -r .
@@ -225,3 +227,82 @@ git reset --hard
 [TOP に戻る](./README.md)
 
 [HOME に戻る](../README.md)
+
+## PRに際して多過ぎるcommitを一つにまとめる
+!! 以下の方法は他の開発者に影響を与える可能性があるため、merge元のブランチに共同開発者がいる場合は事前に確認すること !!
+複数人で一つのprojectに対して作業をしているとき、PRに関わるcommitが多過ぎると、  
+見た目が汚い上にreviewerも困る。  
+そこで、複数のcommitを1つにまとめよう。ということで検索をかけた方はわかると思うが、  
+ネット上には
+```bash
+git rebase -i HEAD~2 // 2つ前までのcommitをまとめる
+```
+で解決！！  
+...とあるが、上記のように大規模な開発となるとそうはいかない。  
+というのも複数ブランチを行き来して作業したり、  
+PRを出すまでの間にも他のPRによってdevelopブランチへと変更がマージされたり、  
+と、`git log --oneline`をしてみると、自分の変更以外のものも紛れ込む。  
+`git reflog`をしても他ブランチの作業履歴などが反映されるために、  
+ただ単純に`git rebase -i HEAD~x`とするわけにはいかないのだ。  
+
+そこで、以下の方法が有効である。  
+あなたの作業ブランチがbranch-Aであり、developブランチへとmergeしたい場合を考える。  
+このとき、まず
+```bash
+git merge-base branch-A develop
+```
+を実行することで、  
+developブランチからbranch-Aが作成されたとすると、このコマンドで共通の親コミットIDが得られる。  
+この親コミットIDをabcxyzとすると、  
+```bash
+git log --oneline abcxyz..branch-A
+```
+で自分のcommitだけが表示されるのである。  
+
+そして、ブランチ分岐から現在のHEADまでの自分のcommitだけを取得してrebaseするには、
+```bash
+git rebase -i abcxyz
+```
+である。  
+
+その後の操作はネットに沢山転がっているので詳しくは述べないが、以下の手順の通りである。  
+1. コミットを一つにまとめる  
+   エディタが開いたら、最初のコミットを pick のままにし、残りのコミットをすべて squash または s に変更する。
+   ```bash
+   pick <最初のコミットID> 最初のコミットメッセージ
+   squash <2番目のコミットID> 2番目のコミットメッセージ
+   squash <3番目のコミットID> 3番目のコミットメッセージ
+   ...
+   squash <最後のコミットID> 最後のコミットメッセージ
+   ```
+2. コミットメッセージを編集する
+   すべてのコミットを一つにまとめた後、新しいコミットメッセージを編集する画面が表示されます。適切なメッセージに編集して保存する。  
+   その前にconflictが起これば都度修正しつつ、
+   ```bash
+   git rebase --continue
+   ```
+   でrebaseを続ける。  
+   途中の状況を知りたければ、
+   ```bash
+   git rebase --edit-todo
+   ```
+   により確認できる。  
+   もちろん、この時開いたeditorは:q!等で変に変更して保存しないように。
+
+3. リベースの完了
+   リベースが完了したら、晴れてlocalのbranch-Aは一つのコミットにまとめられる。
+
+4. リモートブランチを強制プッシュ
+   もちろん今の状態はlocalを変更したに過ぎないので、remoteへ変更を反映させるために、強制プッシュを行う。
+   ```bash
+   git push origin branch-A --force
+   ```
+以上が終われば、晴れてPRのcommitが1つにまとまり、超スッキリ。
+
+
+[目次 に戻る](#目次)
+
+[TOP に戻る](./README.md)
+
+[HOME に戻る](../README.md)
+
