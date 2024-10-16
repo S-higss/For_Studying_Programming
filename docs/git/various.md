@@ -302,7 +302,7 @@ git rebase -i abcxyz
 以上が終われば、晴れてPRのcommitが1つにまとまり、超スッキリ。
 
 以下余談だが、上記作業をPR出す直前にのみ行なった場合、  
-developとの競合状態によってはとてつもないconflict解消作業が発生する。  
+developとの競合状態によっては、とてつもない量のconflict解消作業が発生する。  
 これを避けるために、developが変更されていそうであれば都度
 ```bash
 git pull --rebase origin develop
