@@ -240,8 +240,8 @@ git rebase -i HEAD~2 // 2つ前までのcommitをまとめる
 で解決！！  
 ...とあるが、上記のように大規模な開発となるとそうはいかない。  
 というのも複数ブランチを行き来して作業したり、  
-PRを出すまでの間にも他のPRによってdevelopブランチへと変更がマージされたり、  
-と、`git log --oneline`をしてみると、自分の変更以外のものも紛れ込む。  
+PRを出すまでの間にも他のPRによってdevelopブランチへと変更がマージされたりと、  
+`git log --oneline`をしてみると、自分の変更以外のものも紛れ込む。  
 `git reflog`をしても他ブランチの作業履歴などが反映されるために、  
 ただ単純に`git rebase -i HEAD~x`とするわけにはいかないのだ。  
 
@@ -296,9 +296,23 @@ git rebase -i abcxyz
    もちろん今の状態はlocalを変更したに過ぎないので、remoteへ変更を反映させるために、強制プッシュを行う。
    ```bash
    git push origin branch-A --force
+   # or
+   git push -f origin branch-A
    ```
 以上が終われば、晴れてPRのcommitが1つにまとまり、超スッキリ。
 
+以下余談だが、上記作業をPR出す直前にのみ行なった場合、  
+developとの競合状態によってはとてつもないconflict解消作業が発生する。  
+これを避けるために、developが変更されていそうであれば都度
+```bash
+git pull --rebase origin develop
+```
+により最新のdevelopを取り込むのが最良である。  
+(もちろん自分のみが作業を行なっているブランチであることが前提)
+
+#### 参考文献
+[最新のdevelopの取り込みはgit pull --rebase派](https://sakaishun.com/2022/09/23/git-pull-rebase/)  
+[今さらながらgit pull –rebase origin developについて調べた](https://sakaishun.com/2022/09/23/git-pull-rebase/)
 
 [目次 に戻る](#目次)
 
