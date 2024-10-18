@@ -311,7 +311,7 @@ git pull --rebase origin develop
 (もちろん自分のみが作業を行なっているブランチであることが前提)
 
 #### 参考文献
-[git rebaseで複数のコミットを1つにまとめる](https://qiita.com/hirokik-0076/items/6d50d9d28b5f525cfc37)  
+[【git rebase -i】したときのコマンドをすべて試してみた(p, r, e,s ,f ,x ,d)](https://qiita.com/ykhirao/items/e9f723a553d4eb050817)  
 [最新のdevelopの取り込みはgit pull --rebase派](https://sakaishun.com/2022/09/23/git-pull-rebase/)  
 [今さらながらgit pull –rebase origin developについて調べた](https://sakaishun.com/2022/09/23/git-pull-rebase/)
 
