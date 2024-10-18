@@ -21,7 +21,7 @@
 
 以下のようにブランチをローカルで複製した際，
 ```bash
-git checkout -b "feature/xx"
+git checkout -b feature/xx
 or
 git switch -c feature/xx
 ```
