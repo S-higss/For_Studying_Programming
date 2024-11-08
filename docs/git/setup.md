@@ -1,8 +1,10 @@
 # GitHubリモートレポジトリへpushするまで
-以下，Linux環境での方法です．   
+
+以下，Linux環境での方法です．  
 ssh接続する手順を紹介しています．
 
 ## 目次
+
 - [Gitのインストール](#gitのインストール)
 - [ユーザ名/メールアドレスの設定](#ユーザ名メールアドレスの設定)
 - [公開/秘密鍵の作成](#公開秘密鍵の作成)
@@ -10,8 +12,8 @@ ssh接続する手順を紹介しています．
 - [接続の確認](#接続の確認)
 - [リポジトリにSSH接続](#リポジトリにssh接続)
 
+## Gitのインストール
 
-## Gitのインストール 
 Windows環境ではインストーラーを用いてのインストールになります．  
 その場合は[こちら](https://www.curict.com/item/60/60bfe0e.html)を参考にしてください．  
 
@@ -22,6 +24,7 @@ Windows環境ではインストーラーを用いてのインストールにな�
 sudo apt-get update
 sudo apt-get install git
 ```
+
 を実行することによってGitがインストールされ,`git`コマンドが効くようになります．
 
 ```bash
@@ -37,6 +40,7 @@ git --version
 [HOME に戻る](../README.md)
 
 ## ユーザ名/メールアドレスの設定
+
 以下, Windows/Linux共通です．  
 まずGitHubアカウントを作成していることが大前提となるので，  
 作成していない場合は[公式サイト](https://github.com/)にて，アカウントを作成してください．
@@ -63,6 +67,7 @@ git config --global --list
 [HOME に戻る](../README.md)
 
 ## 公開/秘密鍵の作成
+
 以下, Windows/Linux共通です．  
 `~/.ssh`配下に公開鍵・秘密鍵を作成します．  
 初めて公開鍵・秘密鍵を作成する場合はディレクトリがなく，初回鍵作成時に作成されます．
@@ -93,6 +98,7 @@ Enter passphrase (empty for no passphrase):
 [HOME に戻る](../README.md)
 
 ## 公開鍵の登録
+
 以下，主にLinux環境での説明となります．  
 公開・秘密鍵を作成したら，次はGitHubアカウントに公開鍵の登録をします．  
 
@@ -136,6 +142,7 @@ IdentityFile "/home/<username>/.ssh/rsa_github"
 [HOME に戻る](../README.md)
 
 ## 接続の確認
+
 以下，Windows/Linux共通です．  
 コマンドライン上で以下コマンドを実行します．
 
@@ -144,14 +151,18 @@ ssh -T git@github.com
 ```
 
 初めて接続する際，
+
 ```bash
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
+
 と聞かれますが，`yes`と答えれば大丈夫です．  
 結果，
+
 ```bash
 Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
 ```
+
 と表示されれば成功です．
 
 [目次 に戻る](#目次)
@@ -161,6 +172,7 @@ Hi <username>! You've successfully authenticated, but GitHub does not provide sh
 [HOME に戻る](../README.md)
 
 ## リポジトリにSSH接続
+
 以下，Windows/Linux共通です．  
 ブラウザでGitHubにて使用するリポジトリを開き，`<> code`をクリックしてからsshを選択し，接続するための文字列をコピーします．  
 コマンドライン上に戻り，これからリモートレポジトリをクローンしたいディレクトリ内で
@@ -177,4 +189,3 @@ git clone git@github.com:xxxx/test-repository.git
 [TOP に戻る](./README.md)
 
 [HOME に戻る](../README.md)
-
