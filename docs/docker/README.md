@@ -6,7 +6,7 @@ Dockerのインストールに関しては[Dockerのインストール](../env/R
 ## 目次
 
 - [Dockerの容量不足解決](#dockerの容量不足解決)
-- [Windows環境にてDockerに占領されたディスク領域を解放する](#windows環境にてdockerに占領されたディスク領域を解放する)
+- [Windows-WSL環境にてDockerに占領されたディスク領域を解放する](#windows-wsl環境にてdockerに占領されたディスク領域を解放する)
 
 [HOME に戻る](../README.md)
 
@@ -123,9 +123,46 @@ Build Cache         0                   0                   0B
 
 [HOME に戻る](../README.md)
 
-## Windows環境にてDockerに占領されたディスク領域を解放する
+## Windows-WSL環境にてDockerに占領されたディスク領域を解放する
 
-工事中
+Windowsにて，WSL2を用いたLinux環境でDockerを扱っていると，上記手段ではマシンの容量が戻りません．  
+というのもWSL2は一度確保したディスクをホストに返さないため，Dockerで圧迫した容量も返却されないというわけです．
+
+[WSL2 Docker が PC のディスクを圧迫する - Qiita](https://qiita.com/sarisia/items/5c53c078ab30eb26bc3b)では，  
+Hyper-Vを用いて解決を図っていますが，Hyper-Vが入っているのはWindows Proだけであるため，  
+その他の環境では以下の方法で解決を図ることになります．
+
+### WSLのshutdown
+
+まずディスクを使用している根本原因であるWSLをshutdownします．
+
+```bash
+wsl --shutdown
+```
+
+### diskpartの起動及びext4.vhdxの圧縮
+
+WSLのディスク占領の元凶は`ext4.vhdx`というファイルです．  
+diskpartを用いてディスクを圧縮し，空きスペースを確保するのですが，このディスクの場所を探す必要があります．  
+`C:\Users\<user_name>\AppData\Local\Docker\wsl\data`配下に存在すると思われます．  
+ここにない場合は他の場所を探してください．  
+
+```bash
+diskpart
+```
+
+コマンドを実行すると，diskpart.exeが実行状態になり，専用のコマンドラインが出現します．  
+ここで，先ほど確認した`ext4.vhdx`のパスを用いて
+
+```bash
+DISKPART> select vdisk file="C:\Users\<user_name>\AppData\Local\Docker\wsl\data\ext4.vhdx"
+DISKPART> attach vdisk readonly
+DISKPART> compact vdisk
+DISKPART> detach vdisk
+DISKPART> exit
+```
+
+を実行するとディスク領域の開放が完了します．
 
 [目次 に戻る](#目次)
 
