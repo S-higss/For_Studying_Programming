@@ -6,7 +6,7 @@
 - [Pythonのインストール](#pythonのインストール)
 - [pipのインストール](#pipのインストール)
 - [makeのインストール](#makeのインストール)
-- [dockerのインストール](#dockerのインストール)
+- [Dockerのインストール](#dockerのインストール)
 - [MySQLのインストール](#mysqlのインストール)
 - [Node.jsのインストール](#nodejsのインストール)
 - [Ruby on Rails環境構築](#ruby-on-rails環境構築)
@@ -218,7 +218,7 @@ make -version
 
 [HOME に戻る](../README.md)
 
-## dockerのインストール
+## Dockerのインストール
 
 ### Linux環境の場合 (docker)
 
