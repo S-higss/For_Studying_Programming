@@ -36,6 +36,8 @@ Setting＞Resources＞WSL integrationの順に押下して表示される，
 `Enable integration with my default WSL distro`のチェックを外し(=falseにし)，  
 `Enable integration with additional distros:`において，使用するディストリビューションを選択することです．
 
+![Elastic-Stack関係性](./img/docker_desktop.png)  
+
 というのも，私が普段使用していたのはdefaultのディストリビューションではないのです．  
 Docker Desktopのこのdefault設定のせいでWSLが外部ネットワークに接続できなくなるのは驚きですが，  
 このような場合はWSL integrationを普段使用するディストリビューションに割り当てることで解決が図れます．
