@@ -1,5 +1,14 @@
 # Railsに関して
 
+## 目次
+
+- [デフォルトのrailsディレクトリ構成の概要](#デフォルトのrailsディレクトリ構成の概要)
+- [railsコマンドの短縮形について](#railsコマンドの短縮形について)
+- [railsコマンドの実行前に復元するには](#railsコマンドの実行前に復元するには)
+
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
+
 ## デフォルトのRailsディレクトリ構成の概要
 
 Railsの以下のコマンドを実行し，環境構築が完了すると大量のファイルとディレクトリが作成されます．
@@ -33,6 +42,10 @@ Webアプリケーションのディレクトリをどう構成するかは本�
 | config.ru | Rackミドルウェア用の設定ファイル |
 | .gitignore | Gitに取り込みたくないファイルを指定するためのファイル |
 
+[TOP に戻る](#目次)  
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
+
 ## railsコマンドの短縮形について
 
 例えば，静的なページを扱うコントローラを`StaticPages`のように命名し，これを生成する場合，
@@ -54,6 +67,10 @@ rails generate controller StaticPages
 | `$ rails generate` | `$ rails g` |
 | `$ rails test` | `$ rails t` |
 | `$ bundle install` | `$ bundle` |
+
+[TOP に戻る](#目次)  
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
 
 ## railsコマンドの実行前に復元するには
 
@@ -94,3 +111,7 @@ rails db:migrate VERSION=0
 ```
 
 上のコマンドのVERSION=0は，最初のシリアル番号，つまり最初に行ったマイグレーションに戻すという意味です．
+
+[TOP に戻る](#目次)  
+[Programmingに関して に戻る](README.md)  
+[HOME に戻る](../README.md)
