@@ -119,8 +119,6 @@ Build Cache         0                   0                   0B
 
 [目次 に戻る](#目次)
 
-[TOP に戻る](./README.md)
-
 [HOME に戻る](../README.md)
 
 ## Windows-WSL環境にてDockerに占領されたディスク領域を解放する
@@ -165,7 +163,5 @@ DISKPART> exit
 を実行するとディスク領域の開放が完了します．
 
 [目次 に戻る](#目次)
-
-[TOP に戻る](./README.md)
 
 [HOME に戻る](../README.md)
