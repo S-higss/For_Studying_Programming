@@ -10,6 +10,8 @@
 - [About Hooks](#about-hooks)
 - [Tips](#tips)
 
+[HOME に戻る](../README.md)
+
 ## What is React.js
 
 UIを作ることに特化したJavaScriptのフレームワーク(要チェックライブラリ: react-gradient-timepicker)．  
@@ -17,6 +19,9 @@ MetaのFB/Instagramを始め，多くの大手企業がReactを採用してい�
 コミュニティサポートも活発で，Redux，React Router，Next.jsなど多くの関連ライブラリ・フレームワークがある．  
 ReactNativeの登場によって，Reactのコンポーネントをモバイルアプリにも応用できるようになったり，  
 React16.0のリリースに伴い，Fiberと呼ばれる新しい再レンダリングエンジンが導入され，パフォーマンスが更に向上している．
+
+[TOP に戻る](#目次)  
+[HOME に戻る](../README.md)
 
 ## Reactの特徴
 
@@ -40,6 +45,9 @@ React16.0のリリースに伴い，Fiberと呼ばれる新しい再レンダリ
     → jQueryのaddClassやppend，attrなどほとんどのメソッドの使用機会が無くなる．  
     (jQueryはデータ更新作業とHTML書き換え作業を同時に行う必要があり，判読性の低いコードになりがち)
 
+[TOP に戻る](#目次)  
+[HOME に戻る](../README.md)
+
 ## JSX記法について
 
 Reactの理解に際して一番の鬼門であるJSXについて，HTMLとの違いを述べておく．
@@ -58,6 +66,9 @@ Reactの理解に際して一番の鬼門であるJSXについて，HTMLとの�
     ```
 
     のように，`Array`のmethodである`map`を用いてタグ付き配列に変換できる．
+
+[TOP に戻る](#目次)  
+[HOME に戻る](../README.md)
 
 ## コンポーネントの種類について
 
@@ -207,6 +218,9 @@ Reactの理解に際して一番の鬼門であるJSXについて，HTMLとの�
     propsの更新が反映されるわけがない．  
     もちろんそのように実装はできるが，コストが高くあまり見合わない．
 
+[TOP に戻る](#目次)  
+[HOME に戻る](../README.md)
+
 ## About Component’s lifecycle
 
 ライフサイクルとはコンポーネントが生成されてkら削除までの一連の流れを指す．  
@@ -223,6 +237,9 @@ Reactでは，このライフサイクル間のあるタイミングで処理を
 ＜コンポーネント更新時/コンポーネント消滅時＞
 
 - componentWillUnmount：仮想DOMからコンポーネントが消滅したタイミングで実行され，その後実際のDOMからも削除される．
+
+[TOP に戻る](#目次)  
+[HOME に戻る](../README.md)
 
 ## About Hooks
 
@@ -264,6 +281,9 @@ React 16.8以降導入され，classコンポーネントを書かずにstateや
 - 通常のJS関数内では使用しない．
 - 複数のコンポーネント間で同じlogicを共有する場合，Custom Hooksを作成して再利用する．
 
+[TOP に戻る](#目次)  
+[HOME に戻る](../README.md)
+
 ## Tips
 
 - コード分割
@@ -284,3 +304,6 @@ React.lazyとダイナミックインポートを使用し，必要時のみコ�
 
 - useMemoとuseCallback
 計算コストの高い処理はuseMemoでメモ化し，callback関数はuseCallbackでラップして再利用．
+
+[TOP に戻る](#目次)  
+[HOME に戻る](../README.md)
