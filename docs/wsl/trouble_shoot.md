@@ -7,6 +7,9 @@ WSLに関連するトラブルシューティングをまとめています．
 - [外部ネットワークに接続できない(Docker Desktop for Windows)](#外部ネットワークに接続できないdocker-desktop-for-windows)
 - [外部ネットワークに接続できない(Name Resolution Failure)](#外部ネットワークに接続できないname-resolution-failure)
 
+[WSLの導入 に戻る](README.md)  
+[HOME に戻る](../README.md)
+
 ## 外部ネットワークに接続できない(Docker Desktop for Windows)
 
 ある時WSLで開いているUbuntuで外部ネットワークに接続できなくなりました．  
@@ -37,9 +40,9 @@ Setting＞Resources＞WSL integrationの順に押下して表示される，
 Docker Desktopのこのdefault設定のせいでWSLが外部ネットワークに接続できなくなるのは驚きですが，  
 このような場合はWSL integrationを普段使用するディストリビューションに割り当てることで解決が図れます．
 
-[目次 に戻る](#目次)
-
-[HOME に戻る](../README.md)
+[目次 に戻る](#目次)  
+[WSLの導入 に戻る](README.md)  
+[HOME に戻る](../README.md)  
 
 ## 外部ネットワークに接続できない(Name Resolution Failure)
 
@@ -75,6 +78,6 @@ nameserver 8.8.8.8
 
 このIP `8.8.8.8`は`1.1.1.1`でもよいようです．
 
-[目次 に戻る](#目次)
-
-[HOME に戻る](../README.md)
+[目次 に戻る](#目次)  
+[WSLの導入 に戻る](README.md)  
+[HOME に戻る](../README.md)  

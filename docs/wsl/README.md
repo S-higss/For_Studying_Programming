@@ -41,8 +41,7 @@ WSL2からはLinux自体のカーネルを動作させることで，互換性�
 - Rockey Linux
 - AlmaLinux
 
-[目次 に戻る](#目次)
-
+[目次 に戻る](#目次)  
 [HOME に戻る](../README.md)
 
 ## インストール方法
@@ -53,8 +52,7 @@ Windows 10 バージョン 2004 ビルド 19041以降の場合はPowerShellを�
 wsl --install
 ```
 
-[目次 に戻る](#目次)
-
+[目次 に戻る](#目次)  
 [HOME に戻る](../README.md)
 
 ## 使い方
@@ -136,13 +134,10 @@ wsl --terminate Ubuntu-22.04
 wsl -t Ubuntu-22.04
 ```
 
-[目次 に戻る](#目次)
-
+[目次 に戻る](#目次)  
 [HOME に戻る](../README.md)
 
-## WSLトラブルシューティング
-
-[こちら](./trouble_shoot.md)
+## [WSLトラブルシューティング](./trouble_shoot.md)
 
 ### 参考文献
 
