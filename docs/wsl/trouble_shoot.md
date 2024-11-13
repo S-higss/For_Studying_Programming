@@ -6,6 +6,7 @@ WSLに関連するトラブルシューティングをまとめています．
 
 - [外部ネットワークに接続できない(Docker Desktop for Windows)](#外部ネットワークに接続できないdocker-desktop-for-windows)
 - [外部ネットワークに接続できない(Name Resolution Failure)](#外部ネットワークに接続できないname-resolution-failure)
+- [シャットダウンできない](#シャットダウンできない)
 
 [WSLの導入 に戻る](README.md)  
 [HOME に戻る](../README.md)
@@ -79,6 +80,20 @@ nameserver 8.8.8.8
 ```
 
 このIP `8.8.8.8`は`1.1.1.1`でもよいようです．
+
+[目次 に戻る](#目次)  
+[WSLの導入 に戻る](README.md)  
+[HOME に戻る](../README.md)  
+
+## シャットダウンできない
+
+WSLを使用メモリ量がいっぱいになったままハングアップしてしまい，  
+正攻法ではシャットダウンが受け付けないという状況に陥りました．  
+この際はタスクマネージャーからもkillできないため，管理者権限でPowerShellを起動し，以下のコマンドでshutdownできます．
+
+```bash
+taskkill /f /im wslservice.exe
+```
 
 [目次 に戻る](#目次)  
 [WSLの導入 に戻る](README.md)  
