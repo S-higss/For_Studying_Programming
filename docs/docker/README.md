@@ -156,7 +156,8 @@ diskpartを用いてディスクを圧縮し，空きスペースを確保する
 ここにない場合は他の場所を探してください．  
 
 ※ 2024/11/13追記
-Docker Desktop 4.35.1以降は`data`でなく`disk`ディレクトリ配下に置かれているように思います．
+Docker Desktop 4.35.1以降は，  
+`C:\Users\<user_name>\AppData\Local\Docker\wsl\disk\docker_data.vhdx`で保存されているようです．
 
 ```bash
 diskpart
