@@ -204,6 +204,8 @@ WSLのディスクイメージ`docker_data.vhdx`を，
 
 編集後Docker Desktopを再起動し，`docker_data.vhdx`が目的の場所に作成されていれば成功です．
 
+参考文献: [Unable to move disk image location to another drive](https://github.com/docker/for-win/issues/14163)
+
 [目次 に戻る](#目次)
 
 [HOME に戻る](../README.md)
