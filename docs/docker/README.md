@@ -7,6 +7,7 @@ Dockerのインストールに関しては[Dockerのインストール](../env/R
 
 - [Dockerの容量不足解決](#dockerの容量不足解決)
 - [Windows-WSL環境にてDockerに占領されたディスク領域を解放する](#windows-wsl環境にてdockerに占領されたディスク領域を解放する)
+- [Windows-WSL環境にてディスク保存場所を変更する](#windows-wsl環境にてディスク保存場所を変更する)
 
 [HOME に戻る](../README.md)
 
@@ -175,6 +176,33 @@ DISKPART> exit
 ```
 
 を実行するとディスク領域の開放が完了します．
+
+[目次 に戻る](#目次)
+
+[HOME に戻る](../README.md)
+
+## windows-wsl環境にてディスク保存場所を変更する
+
+以下，Docker Desktop 4.35.1以降の説明です．  
+WSLのディスクイメージ`docker_data.vhdx`を，  
+`C:\Users\<user_name>\AppData\Local\Docker\wsl\disk`から  
+`S:\wsl\docker`へと移動したいが，  
+バージョンが新しいため全く情報がなかったためハマりました．  
+
+解決するには，  
+まずDocker Desktopを完全に停止させ，  
+その後`C:\Users\<user_name>\AppData\Roaming\Docker\settings-store.json`を編集します．  
+この際，以下のように`customWslDistroDir`を変更します．
+
+```bash
+{
+    ...
+    "CustomWslDistroDir": "S:\\wsl\\docker",
+    ...
+}
+```
+
+編集後Docker Desktopを再起動し，`docker_data.vhdx`が目的の場所に作成されていれば成功です．
 
 [目次 に戻る](#目次)
 
