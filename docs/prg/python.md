@@ -238,7 +238,7 @@ list_oldの要素数nに対してlist_newの各要素を順に比較する必要
 set_old = set(list_old)
 set_new = set(list_new)
 
-# list_newに含まれ、list_oldに含まれていない要素を取得
+# list_newに含まれ，list_oldに含まれていない要素を取得
 new_elements = list(set_new - set_old)
 ```
 
@@ -315,7 +315,7 @@ DataFrameからのデータの取り出し方4選
 3. 特定のセルの値の取得
   
     ```bash
-    # 行インデックス 0、列ラベル 'column_name' のセルの値を取得
+    # 行インデックス 0，列ラベル 'column_name' のセルの値を取得
     cell_value = df.at[0, 'column_name']
     ```
   

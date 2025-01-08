@@ -230,7 +230,7 @@ Metricbeatは基本的にインストールするだけでプロセスごとのC
 
 ### logstash.confの設定
 
-logstash.confはinput、filter、outputの3つに分かれています．動作確認時に少し記載しましたが，この章では本格的にlogstash.confを記載します．  
+logstash.confはinput，filter，outputの3つに分かれています．動作確認時に少し記載しましたが，この章では本格的にlogstash.confを記載します．  
 logstash.confの記載を変更する場合，念のためLogstashサービスを停止しておきましょう．
 
 #### input
@@ -766,7 +766,7 @@ curl -k -u elastic:<password> https://localhost:9200
 
 このコマンドは，curlを使用してHTTPS経由でlocalhostの9200番ポートにあるElasticsearchに対して認証付きでリクエストを送信するものである．  
 オプションとしては`-k`はサーバー証明書の検証を無効化，`-u`はユーザー名とパスワードを指定するもの．  
-指定されたユーザー名はelasticで、パスワードは`<password>`である．  
+指定されたユーザー名はelasticで，パスワードは`<password>`である．  
 ここでのパスワードは
 
 ```bash
