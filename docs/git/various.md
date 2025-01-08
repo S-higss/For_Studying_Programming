@@ -4,12 +4,17 @@
 
 ## 目次
 
-- [featureブランチでもgit pushを可能にする](#featureブランチでもgit-pushを可能にする)
-- [devcontainerからpushする](#devcontainerからpushする)
-- [masterブランチのdbデータをfeatureブランチに上書き](#masterブランチのdbデータをfeatureブランチに上書き)
-- [Authenticationのエラーによりpushできない](#authenticationのエラーによりpushできない)
-- [developでpullすると自分の編集していないファイルが差分として出てくる](#developでpullすると自分の編集していないファイルが差分として出てくる)
-- [PRに際して多過ぎるcommitを一つにまとめる](#prに際して多過ぎるcommitを一つにまとめる)
+- [Gitあれこれ](#gitあれこれ)
+  - [目次](#目次)
+  - [featureブランチでも`git push`を可能にする](#featureブランチでもgit-pushを可能にする)
+    - [補足](#補足)
+  - [devcontainerからpushする](#devcontainerからpushする)
+  - [masterブランチのdbデータをfeatureブランチに上書き](#masterブランチのdbデータをfeatureブランチに上書き)
+  - [Authenticationのエラーによりpushできない](#authenticationのエラーによりpushできない)
+  - [developでpullすると自分の編集していないファイルが差分として出てくる](#developでpullすると自分の編集していないファイルが差分として出てくる)
+  - [PRに際して多過ぎるcommitを一つにまとめる](#prに際して多過ぎるcommitを一つにまとめる)
+    - [参考文献](#参考文献)
+  - [機密データをpushしてしまっていた](#機密データをpushしてしまっていた)
 
 [TOP に戻る](./README.md)  
 [HOME に戻る](../README.md)
@@ -170,7 +175,7 @@ Automatic merge failed; fix conflicts and then commit the result.
     # featureブランチにチェックアウト
     git checkout feature
 
-    # masterブランチをマージし、コンフリクトを無視して上書き
+    # masterブランチをマージし，コンフリクトを無視して上書き
     git merge -s ours master
 
     # masterブランチの内容をfeatureブランチに上書き
@@ -224,7 +229,7 @@ git remote set-url origin git@github.com:USERNAME/YOURREPOSITORY.git
 
 ## developでpullすると自分の編集していないファイルが差分として出てくる
 
-ある時、developで`git pull`を行うと、
+ある時，developで`git pull`を行うと，
 
 ```bash
 Encountered 2 files that should have been pointers, but weren't:
@@ -232,10 +237,10 @@ public/images/xxxx.png
 public/images/yyyy.png
 ```
 
-のように表示され、これをcommitしてpushしない限りbranch移動さえもできない状況となった。  
-これらのファイルは自分が編集したわけではなく、共同編集者(他グループ)が編集したもので、  
-これをpushしてしまうと彼らの修正が変更されてしまうことになる。これは避けたい。  
-だが以下のどのコマンドを打ち込んでも解決はしなかった。  
+のように表示され，これをcommitしてpushしない限りbranch移動さえもできない状況となった．  
+これらのファイルは自分が編集したわけではなく，共同編集者(他グループ)が編集したもので，  
+これをpushしてしまうと彼らの修正が変更されてしまうことになる．これは避けたい．  
+だが以下のどのコマンドを打ち込んでも解決はしなかった．  
 
 - `git fetch origin`
 - `git merge origin develop`
@@ -243,16 +248,16 @@ public/images/yyyy.png
 - `git reset --hard origin/develop`
 - `git pull --rebase origin develop`  
 
-このような時は、以下のコマンドが役立つ。
+このような時は，以下のコマンドが役立つ．
 
 ```bash
 git rm --cached -r .
 git reset --hard
 ```
 
-前者のコマンドは、リポジトリ内のすべてのファイルをインデックス（ステージングエリア）から削除するが、ワーキングディレクトリからは削除しない。  
-これは、次のコミットでこれらのファイルがリポジトリから削除されることを意味する。  
-その後強制的にリセットをかけることで元に戻る。
+前者のコマンドは，リポジトリ内のすべてのファイルをインデックス（ステージングエリア）から削除するが，ワーキングディレクトリからは削除しない．  
+これは，次のコミットでこれらのファイルがリポジトリから削除されることを意味する．  
+その後強制的にリセットをかけることで元に戻る．
 
 [目次 に戻る](#目次)
 
@@ -262,10 +267,10 @@ git reset --hard
 
 ## PRに際して多過ぎるcommitを一つにまとめる
 
-!! 以下の方法は他の開発者に影響を与える可能性があるため、merge元のブランチに共同開発者がいる場合は事前に確認すること !!
-複数人で一つのprojectに対して作業をしているとき、PRに関わるcommitが多過ぎると、  
-見た目が汚い上にreviewerも困る。  
-そこで、複数のcommitを1つにまとめよう。ということで検索をかけた方はわかると思うが、  
+!! 以下の方法は他の開発者に影響を与える可能性があるため，merge元のブランチに共同開発者がいる場合は事前に確認すること !!
+複数人で一つのprojectに対して作業をしているとき，PRに関わるcommitが多過ぎると，  
+見た目が汚い上にreviewerも困る．  
+そこで，複数のcommitを1つにまとめよう．ということで検索をかけた方はわかると思うが，  
 ネット上には
 
 ```bash
@@ -273,43 +278,43 @@ git rebase -i HEAD~2 // 2つ前までのcommitをまとめる
 ```
 
 で解決！！  
-...とあるが、上記のように大規模な開発となるとそうはいかない。  
-というのも複数ブランチを行き来して作業したり、  
-PRを出すまでの間にも他のPRによってdevelopブランチへと変更がマージされたりと、  
-`git log --oneline`をしてみると、自分の変更以外のものも紛れ込む。  
-`git reflog`をしても他ブランチの作業履歴などが反映されるために、  
-ただ単純に`git rebase -i HEAD~x`とするわけにはいかないのだ。  
+...とあるが，上記のように大規模な開発となるとそうはいかない．  
+というのも複数ブランチを行き来して作業したり，  
+PRを出すまでの間にも他のPRによってdevelopブランチへと変更がマージされたりと，  
+`git log --oneline`をしてみると，自分の変更以外のものも紛れ込む．  
+`git reflog`をしても他ブランチの作業履歴などが反映されるために，  
+ただ単純に`git rebase -i HEAD~x`とするわけにはいかないのだ．  
 
-そこで、以下の方法が有効である。  
-あなたの作業ブランチがbranch-Aであり、developブランチへとmergeしたい場合を考える。  
-このとき、まず
+そこで，以下の方法が有効である．  
+あなたの作業ブランチがbranch-Aであり，developブランチへとmergeしたい場合を考える．  
+このとき，まず
 
 ```bash
 git merge-base branch-A develop
 ```
 
-を実行することで、  
-developブランチからbranch-Aが作成されたとすると、このコマンドで共通の親コミットIDが得られる。  
-この親コミットIDをabcxyzとすると、  
+を実行することで，  
+developブランチからbranch-Aが作成されたとすると，このコマンドで共通の親コミットIDが得られる．  
+この親コミットIDをabcxyzとすると，  
 
 ```bash
 git log --oneline abcxyz..branch-A
 ```
 
-で自分のcommitだけが表示されるのである。  
+で自分のcommitだけが表示されるのである．  
 
-そして、ブランチ分岐から現在のHEADまでの自分のcommitだけを取得してrebaseするには、
+そして，ブランチ分岐から現在のHEADまでの自分のcommitだけを取得してrebaseするには，
 
 ```bash
 git rebase -i abcxyz
 ```
 
-である。  
+である．  
 
-その後の操作はネットに沢山転がっているので詳しくは述べないが、以下の手順の通りである。  
+その後の操作はネットに沢山転がっているので詳しくは述べないが，以下の手順の通りである．  
 
 1. コミットを一つにまとめる  
-   エディタが開いたら、最初のコミットを pick のままにし、残りのコミットをすべて squash または s に変更する。
+   エディタが開いたら，最初のコミットを pick のままにし，残りのコミットをすべて squash または s に変更する．
 
    ```bash
    pick <最初のコミットID> 最初のコミットメッセージ
@@ -320,28 +325,28 @@ git rebase -i abcxyz
    ```
 
 2. コミットメッセージを編集する
-   すべてのコミットを一つにまとめた後、新しいコミットメッセージを編集する画面が表示されます。適切なメッセージに編集して保存する。  
-   その前にconflictが起これば都度修正しつつ、
+   すべてのコミットを一つにまとめた後，新しいコミットメッセージを編集する画面が表示されます．適切なメッセージに編集して保存する．  
+   その前にconflictが起これば都度修正しつつ，
 
    ```bash
    git rebase --continue
    ```
 
-   でrebaseを続ける。  
-   途中の状況を知りたければ、
+   でrebaseを続ける．  
+   途中の状況を知りたければ，
 
    ```bash
    git rebase --edit-todo
    ```
 
-   により確認できる。  
-   もちろん、この時開いたeditorは:q!等で変に変更して保存しないように。
+   により確認できる．  
+   もちろん，この時開いたeditorは:q!等で変に変更して保存しないように．
 
 3. リベースの完了
-   リベースが完了したら、晴れてlocalのbranch-Aは一つのコミットにまとめられる。
+   リベースが完了したら，晴れてlocalのbranch-Aは一つのコミットにまとめられる．
 
 4. リモートブランチを強制プッシュ
-   もちろん今の状態はlocalを変更したに過ぎないので、remoteへ変更を反映させるために、強制プッシュを行う。
+   もちろん今の状態はlocalを変更したに過ぎないので，remoteへ変更を反映させるために，強制プッシュを行う．
 
    ```bash
    git push origin branch-A --force
@@ -349,24 +354,63 @@ git rebase -i abcxyz
    git push -f origin branch-A
    ```
 
-以上が終われば、晴れてPRのcommitが1つにまとまり、超スッキリ。
+以上が終われば，晴れてPRのcommitが1つにまとまり，超スッキリ．
 
-以下余談だが、上記作業をPR出す直前にのみ行なった場合、  
-developとの競合状態によっては、とてつもない量のconflict解消作業が発生する。  
-これを避けるために、developが変更されていそうであれば都度
+以下余談だが，上記作業をPR出す直前にのみ行なった場合，  
+developとの競合状態によっては，とてつもない量のconflict解消作業が発生する．  
+これを避けるために，developが変更されていそうであれば都度
 
 ```bash
 git pull --rebase origin develop
 ```
 
-により最新のdevelopを取り込むのが最良である。  
+により最新のdevelopを取り込むのが最良である．  
 (もちろん自分のみが作業を行なっているブランチであることが前提)
+
+[目次 に戻る](#目次)
+
+[TOP に戻る](./README.md)
+
+[HOME に戻る](../README.md)
+
+## 機密データをpushしてしまっていた
+
+過去にパスワードを含むファイルをgithubに保存してしまっていたことがあった．  
+privateに設定していたため何とかなったが，これがpublicであると洒落にならない．  
+とは言ってもこれを見ているということはprivateであれpublicであれ一刻も早く消したいということであろう．  
+
+そこで対処法を以下に記す．  
+結論としては「`filter-branch`コマンドを用いる」である．  
+
+```bash
+git filter-branch --index-filter 'git rm --cached --ignore-unmatch <filename>' HEAD
+```
+
+これは．大量のコミットの書き換えを機械的に行うオプションである．  
+`filter-branch`自体がshell scriptで記述されており，`--index-filter`オプションを用いることで全てのcommitを精査して対象ファイルを削除する．  
+これを用いることで，githubのhistoryからも削除されることになり，完全に抹消が可能となる．  
+
+上記操作後は大量のコミット履歴においてリモートと差異がでるため，`push --force`が必須となる．  
+したがって，__これがチームでの開発であるならば注意が必要である__．  
+
+### 注意
+
+このコマンドは大昔から存在し，
+
+- 大規模なリポジトリに対しては遅くなることがある
+- 設定や使用方法が複雑で，誤った操作を行いやすい
+- 多くの問題を引き起こす可能性がある
+
+という問題点があるため，`filter-repo`をインストールして使用することが推奨されている．  
+詳細は[こちら](https://qiita.com/propella/items/7b149c8e979b0d9fe416)を参照してください．  
 
 ### 参考文献
 
-[【git rebase -i】したときのコマンドをすべて試してみた(p, r, e,s ,f ,x ,d)](https://qiita.com/ykhirao/items/e9f723a553d4eb050817)  
-[最新のdevelopの取り込みはgit pull --rebase派](https://sakaishun.com/2022/09/23/git-pull-rebase/)  
-[今さらながらgit pull –rebase origin developについて調べた](https://sakaishun.com/2022/09/23/git-pull-rebase/)
+- [【git rebase -i】したときのコマンドをすべて試してみた(p, r, e,s ,f ,x ,d)](https://qiita.com/ykhirao/items/e9f723a553d4eb050817)  
+- [最新のdevelopの取り込みはgit pull --rebase派](https://sakaishun.com/2022/09/23/git-pull-rebase/)  
+- [今さらながらgit pull –rebase origin developについて調べた](https://sakaishun.com/2022/09/23/git-pull-rebase/)
+- [git最強のオプション filter-branch](https://qiita.com/Spring_MT/items/f60c391b5dbf569a1d12)
+- [git-filter-repo](https://qiita.com/propella/items/7b149c8e979b0d9fe416)
 
 [目次 に戻る](#目次)
 
