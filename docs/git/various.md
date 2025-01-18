@@ -14,6 +14,7 @@
   - [developでpullすると自分の編集していないファイルが差分として出てくる](#developでpullすると自分の編集していないファイルが差分として出てくる)
   - [PRに際して多過ぎるcommitを一つにまとめる](#prに際して多過ぎるcommitを一つにまとめる)
     - [参考文献](#参考文献)
+  - [機密データをpushしてしまった](#機密データをpushしてしまった)
   - [機密データをpushしてしまっていた](#機密データをpushしてしまっていた)
 
 [TOP に戻る](./README.md)  
@@ -373,6 +374,55 @@ git pull --rebase origin develop
 
 [HOME に戻る](../README.md)
 
+## 機密データをpushしてしまった
+
+commitに機密データを含めたままpushしてしまったことがある．  
+公開設定がprivateで機密データを含めたcommitがその1つだけであれば傷が浅い．  
+public設定ならば直ちに対処が必要である．  
+
+当該Tipsは直前のcommitだけを取り消したい場合に有効であり，過去のcommitまで遡って打ち消したい場合は[次のTips](#機密データをpushしてしまっていた)を推奨する．
+
+対処法を以下に記す．  
+結論としては「`reset`コマンドを用いる」である．  
+"commitを取り消したい"と検索をかけると`revert`を用いればよいという情報が出てくるが，  
+機密データを完全に履歴から削除したいならば避けなければならない．  
+なぜなら`revert`は対象commitを打ち消すようなcommitを新たに追加するためであり，対象commitは履歴に残り続け，参照できてしまうためである．  
+対して`reset`はcommit履歴を書き換えて対象commitがなかったことにできる，
+
+まず以下のコマンドで対象commitのIDを確認する．  
+`--graph`オプションは無くともよいが，あるとmerge commitの親1と親2が区別できて見やすい．  
+
+```bash
+git log --graph --oneline
+
+# 実行結果
+*   000a111 (HEAD -> develop, origin/develop, origin/HEAD) Merge branch 'develop' of https[:]//github.com/sample into develop
+|\
+| * 111bc2d [feature]sample commit
+| * 22de333 [update]sample function
+```
+
+このとき，ID`000a111`により機密データがcommitされてしまったとすると，  
+次のコマンドで履歴をID`111bc2d`にまで戻す必要がある．  
+
+```bash
+git reset --hard 111bc2d
+```
+
+再び`git log`コマンドで履歴を確認すると，確かに履歴が戻されていることが確認できる．  
+最後に，現在のローカルリポジトリの状態をリモートリポジトリに上書きを行う．  
+***注意*** 他の開発者がこのブランチで作業している場合conflictが発生する可能性があるため要確認．  
+
+```bash
+git push origin develop --force
+```
+
+[目次 に戻る](#目次)
+
+[TOP に戻る](./README.md)
+
+[HOME に戻る](../README.md)
+
 ## 機密データをpushしてしまっていた
 
 過去にパスワードを含むファイルをgithubに保存してしまっていたことがあった．  
@@ -391,7 +441,7 @@ git filter-branch --index-filter 'git rm --cached --ignore-unmatch <filename>' H
 これを用いることで，githubのhistoryからも削除されることになり，完全に抹消が可能となる．  
 
 上記操作後は大量のコミット履歴においてリモートと差異がでるため，`push --force`が必須となる．  
-したがって，__これがチームでの開発であるならば注意が必要である__．  
+したがって，**これがチームでの開発であるならば注意が必要である**．  
 
 ### 注意
 
