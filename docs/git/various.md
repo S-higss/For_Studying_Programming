@@ -13,9 +13,9 @@
   - [Authenticationのエラーによりpushできない](#authenticationのエラーによりpushできない)
   - [developでpullすると自分の編集していないファイルが差分として出てくる](#developでpullすると自分の編集していないファイルが差分として出てくる)
   - [PRに際して多過ぎるcommitを一つにまとめる](#prに際して多過ぎるcommitを一つにまとめる)
-    - [参考文献](#参考文献)
   - [機密データをpushしてしまった](#機密データをpushしてしまった)
   - [機密データをpushしてしまっていた](#機密データをpushしてしまっていた)
+  - [参考文献](#参考文献)
 
 [TOP に戻る](./README.md)  
 [HOME に戻る](../README.md)
